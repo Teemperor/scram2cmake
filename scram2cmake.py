@@ -11,16 +11,17 @@ prefix = os.getcwd() + os.sep
 # some data files in the same directory.
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
-# Option for enabling-disabling
-cxxmodules = True
+# Options for enabling/disabling cxxmodules
+cxxmodules = False
 perHeaderModules = False
 
 # Handle command line arguments
 for arg in sys.argv[1:]:
     if arg == "--per-header":
         perHeaderModules = True
-    elif arg == "--no-modules":
-        cxxmodules = False
+        cxxmodules = True
+    elif arg == "--modules":
+        cxxmodules = True
     else:
         print("Unknown arg: " + arg)
         exit(1)
@@ -226,7 +227,8 @@ class ScramModule:
 
 
 class ScramProject:
-
+    # Creates all external targets that SCRAM can depend on (e.g. root, geant4...)
+    # They only serve the purpose that we can resolve dependencies...
     def init_builtin(self):
         builtin_json = open(os.path.dirname(os.path.realpath(__file__)) + os.sep + "builtin.json")
         builtins = json.load(builtin_json)
@@ -248,9 +250,14 @@ class ScramProject:
             self.add_target(m)
 
     def __init__(self):
+        # List of all modules in this project
         self.modules = []
+        # All targets that can be built within this project (contains also externals targets
+        # that aren't directly built such as root, geant4)
         self.targets = {}
+        # Dictionary with the format "subsystem-name" -> [module1, module2]
         self.subsystems = {}
+        # Create builtin targets
         self.init_builtin()
 
     def get_target(self, name):
@@ -276,29 +283,28 @@ class ScramProject:
         target.project = self
         self.targets[target.name.lower()] = target
 
+    # During parsing each target only knows other targets (e.g. dependencies)
+    # by name. This will resolve all those names to actual references to those
+    # targets.
     def resolve_dependencies(self):
         for target in self.targets.values():
             target.link_dependencies()
 
-
-def handle_BuildFileXml_environment(node):
-        for topElement in node:
-            if topElement.tag == "use":
-                for element in node:
-                    if element.tag == "library" or element.tag == "bin":
-                        element.append(topElement)
-            if topElement.tag == "environment":
-                handle_BuildFileXml_environment(topElement)
-
-
+# Takes a path to a BuildFile.xml and transforms it into an XML node.
+# Also does some preprocessing like handling global <use> tags...
 def parse_BuildFileXml(path):
     f = open(path)
     try:
         data = f.read().strip()
         data = "<build>" + data + "</build>"
         root = ET.fromstring(data)
-
-        handle_BuildFileXml_environment(root)
+        # Manually copy all global <use> not inside a <bin>/<library> tag
+        # to each of those tags in the current BuildFile.xml
+        for topElement in root:
+            if topElement.tag == "use":
+                for element in root:
+                    if element.tag == "library" or element.tag == "bin":
+                        element.append(topElement)
 
         f.close()
         return root
@@ -309,24 +315,22 @@ def parse_BuildFileXml(path):
         return None
 
 
+# Given the specific module root directory (e.g. '~/CERN/cmssw/FWCore/Version') and the full path
+# to a BuildFile.xml inside this directory (e.g. '~/CERN/cmssw/FWCore/Version/BuildFile.xml'),
+# this function will configure a ScramModule.
 def handle_BuildFileXml(root, path):
-
     rel_path = remove_prefix(root)
-
-    # debug output: print("[PARSING] " + root)
-
     node = parse_BuildFileXml(path)
+    return ScramModule(rel_path, root, node)
 
-    m = ScramModule(rel_path, root, node)
-
-    return m
-
-
+# Generates CMake files that represent the given ScramProject.
 class CMakeGenerator:
 
     def __init__(self, project):
         self.project = project
 
+    # Writes the necessary CMake commands to generate the given target
+    # to the given out stream (which needs to support a 'write' call).
     def generate_target(self, target, out):
         if target.is_virtual():
             return
@@ -353,6 +357,9 @@ class CMakeGenerator:
             out.write(")\n")
         out.write("\n")
 
+    # Generates the CMakeLists.txt for a given target. Note: This function APPENDS to an
+    # existing CMakeLists.txt, because multiple targets are each written by their own
+    # `handle_target` call to the same CMakeLists.txt.
     def handle_target(self, target):
         output_path = target.dir + os.sep + "CMakeLists.txt"
         output_file = open(output_path, "a")
@@ -360,6 +367,7 @@ class CMakeGenerator:
         output_file.close()
 
 
+    # Genereates the CMakeLists.txt for a given module (e.g. `FWCore/Version/CMakeLists.txt`
     def handle_module(self, module):
         output_path = module.base_dir + os.sep + "CMakeLists.txt"
 
@@ -378,6 +386,35 @@ class CMakeGenerator:
         output_file.close()
         return True
 
+    def handle_subsystem(self, subsystem, subsystem_modules):
+        subsystem_cmake = open(subsystem + os.sep + "CMakeLists.txt", "w")
+        for module in subsystem_modules:
+            subsystem_cmake.write("add_subdirectory(" + module.package + ")\n")
+
+        subsystem_cmake.write("\n\n")
+
+        has_buildable_targets = False
+        for module in subsystem_modules:
+            for target in module.targets:
+                if target.built_by_cmake():
+                    has_buildable_targets = True
+                    break
+
+        if has_buildable_targets:
+            subsystem_cmake.write("# Meta-target that builds everything in this subsystem\n")
+            subsystem_cmake.write("add_custom_target(" + subsystem + "_all)\n")
+            subsystem_cmake.write("add_dependencies(" + subsystem + "_all")
+            for module in subsystem_modules:
+                for target in module.targets:
+                    # FIXME: The StaticAnalyzer check is just an ugly hack...
+                    if target.built_by_cmake() and target.symbol != "UtilitiesStaticAnalyzers":
+                        subsystem_cmake.write("\n  " + target.symbol)
+
+            subsystem_cmake.write("\n)\n")
+
+        subsystem_cmake.close()
+
+    # Generates the top-level CMakeLists.txt
     def gen_top_level(self):
         output_path = "CMakeLists.txt"
         output_file = open(output_path, "w")
@@ -386,8 +423,6 @@ class CMakeGenerator:
         output_file.write("project(CMSSW)\n\n")
         output_file.write("include_directories(${CMAKE_SOURCE_DIR})\n")
         output_file.write("include_directories(/usr/include/)\n")
-        #output_file.write("include_directories(/usr/include/root/)\n")
-
 
         include_paths = set()
 
@@ -411,12 +446,8 @@ class CMakeGenerator:
 
         for subsystem in subsystem_list:
             output_file.write("add_subdirectory(" + subsystem + ")\n")
-
             subsystem_modules = self.project.subsystems[subsystem]
-            subsystem_cmake = open(subsystem + os.sep + "CMakeLists.txt", "w")
-            for module in subsystem_modules:
-                subsystem_cmake.write("add_subdirectory(" + module.package + ")\n")
-            subsystem_cmake.close()
+            self.handle_subsystem(subsystem, subsystem_modules)
 
         module_groups = {}
 
@@ -513,7 +544,7 @@ class CMakeGenerator:
 
 
 def main():
-
+    # Create an empty ScramProject
     project = ScramProject()
 
     # traverse root directory, and list directories as dirs and files as files
