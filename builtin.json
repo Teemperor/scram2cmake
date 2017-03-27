@@ -1,0 +1,375 @@
+{
+  "CLHEP": {},
+  "CSCTrackFinderEmulation": {},
+  "CoralBase": {},
+  "CoralCommon": {},
+  "CoralKernel": {},
+  "Core" : {},
+  "Geometry/CaloEventSetup": {},
+  "HepMC": {},
+  "HepPDT": {},
+  "IOPool/Stramer": {},
+  "L1Trigger/L1TCalorimeter": {},
+  "L1Trigger/L1TGlobal": {},
+  "L1Trigger/L1TMuonBarrel": {},
+  "RecoLocalTracker/SiPixelClusterizer": {},
+  "RecoTracker/TkNavigation": {},
+  "RelationalAccess": {},
+  "TkOnlineSwDB": {},
+  "boost": {
+    "includes" : ["/usr/include/boost/"],
+    "links" : ["dl", "boost_thread"]
+  },
+  "boost_filesystem": {
+    "includes" : ["/usr/include/boost/filesystem/"],
+    "depends" : ["boost"],
+    "links" : ["boost_filesystem", "boost_system"]
+
+  },
+  "boost_header": {},
+  "boost_iostreams": {
+    "includes" : ["/usr/include/boost/iostreams/"],
+    "depends" : ["boost"]
+  },
+  "boost_program_options": {
+    "includes" : ["/usr/include/boost/program_options/"],
+    "depends" : ["boost"],
+    "links" : ["boost_program_options"]
+  },
+  "boost_python": {
+    "includes" : ["/usr/include/boost/python/", "/usr/include/python2.7/"],
+    "depends" : ["boost"],
+    "links" : ["boost_python", "dl", "python2.7"]
+
+  },
+  "boost_regex": {
+    "includes" : ["/usr/include/boost/regex/"],
+    "depends" : ["boost"],
+    "links" : ["boost_regex"]
+
+  },
+  "boost_serialization": {
+    "includes" : ["/usr/include/boost/serialization/"],
+    "depends" : ["boost"],
+    "links" : ["boost_serialization"]
+  },
+  "boost_system": {
+    "includes" : ["/usr/include/boost/system/"],
+    "depends" : ["boost"],
+    "links" : ["boost_system"]
+  },
+  "boost_test": {},
+  "bz2lib": {
+    "links" : ["bz2"]
+  },
+  "cascade": {},
+  "castor_header": {},
+  "castor": {},
+  "cgal": {},
+  "classlib": {},
+  "clhep": {
+    "links" : ["CLHEP"]
+  },
+  "clhepheader": {},
+  "cppunit": {
+    "links" : ["cppunit"]
+  },
+  "curl": {},
+  "davix": {},
+  "dcap": {},
+  "dpm": {},
+  "eigen": {},
+  "evtgen": {},
+  "Eve": {},
+  "expat": {},
+  "f77compiler": {},
+  "fastjet": {},
+  "fastjet-contrib": {},
+  "fftjet": {},
+  "fftw3": {},
+  "gpad" : {},
+  "gcc-atomic": {},
+  "geant4": {
+    "includes" : ["/usr/include/Geant4/"],
+    "links" : [
+        "/usr/lib/libG4analysis.so",
+        "/usr/lib/libG4clhep.so",
+        "/usr/lib/libG4digits_hits.so",
+        "/usr/lib/libG4error_propagation.so",
+        "/usr/lib/libG4event.so",
+        "/usr/lib/libG4FR.so",
+        "/usr/lib/libG4geometry.so",
+        "/usr/lib/libG4gl2ps.so",
+        "/usr/lib/libG4global.so",
+        "/usr/lib/libG4GMocren.so",
+        "/usr/lib/libG4graphics_reps.so",
+        "/usr/lib/libG4intercoms.so",
+        "/usr/lib/libG4interfaces.so",
+        "/usr/lib/libG4materials.so",
+        "/usr/lib/libG4modeling.so",
+        "/usr/lib/libG4OpenGL.so",
+        "/usr/lib/libG4OpenInventor.so",
+        "/usr/lib/libG4parmodels.so",
+        "/usr/lib/libG4particles.so",
+        "/usr/lib/libG4persistency.so",
+        "/usr/lib/libG4physicslists.so",
+        "/usr/lib/libG4processes.so",
+        "/usr/lib/libG4RayTracer.so",
+        "/usr/lib/libG4readout.so",
+        "/usr/lib/libG4run.so",
+        "/usr/lib/libG4tracking.so",
+        "/usr/lib/libG4track.so",
+        "/usr/lib/libG4Tree.so",
+        "/usr/lib/libG4visHepRep.so",
+        "/usr/lib/libG4vis_management.so",
+        "/usr/lib/libG4visXXX.so",
+        "/usr/lib/libG4VRML.so"
+    ]
+   },
+  "geant4core": {
+    "depends" : ["geant4"]
+   },
+  "geant4static": {
+    "depends" : ["geant4"]
+   },
+  "Geom" : {},
+  "GeomPainter" : {},
+  "GLEW" : {},
+  "Gui" : {},
+  "GuiHtml" : {},
+  "GX11" : {},
+  "gsl": {},
+  "Graf" : {},
+  "hector": {},
+  "hepmc": {},
+  "heppdt": {},
+  "herwig": {},
+  "histogrammar": {},
+  "jimmy": {},
+  "jemalloc": {},
+  "ktjet": {},
+  "lapack" : {},
+  "lhapdf": {},
+  "libhepml": {},
+  "libuuid": {
+    "links" : ["uuid"]
+  },
+  "llvm": {},
+  "lwtnn": {},
+  "MathMore" : {},
+  "mcdb": {},
+  "md5": {
+    "includes" : ["/home/teemperor/cms/md5/"],
+    "links" : ["/home/teemperor/cms/md5/libmd5.so", "cfitsio"]
+  },
+  "Minuit2" : {},
+  "meschach": {},
+  "occi" : {},
+  "opengl": {},
+  "openssl": {},
+  "oracle": {},
+  "oracleocci": {},
+  "photos": {},
+  "photospp": {},
+  "Physics" : {},
+  "protobuf": {},
+  "py2-matplotlib": {},
+  "py2-pandas": {},
+  "py2-pippkgs": {},
+  "py2-root_numpy": {},
+  "pyclang": {},
+  "pydata": {},
+  "pythia6": {},
+  "pythia8": {},
+  "RGL" : {},
+  "rivet": {},
+  "root": {
+    "includes" : ["/usr/include/root/", "/home/teemperor/CERN/root-build/include"],
+    "links" : [
+        "/usr/lib/root/libASImageGui.so",
+        "/usr/lib/root/libASImage.so",
+        "/usr/lib/root/libBonjour.so",
+        "/usr/lib/root/libCling.so",
+        "/usr/lib/root/libcomplexDict.so",
+        "/usr/lib/root/libCore.so",
+        "/usr/lib/root/libdequeDict.so",
+        "/usr/lib/root/libEG.so",
+        "/usr/lib/root/libEve.so",
+        "/usr/lib/root/libFFTW.so",
+        "/usr/lib/root/libFitPanel.so",
+        "/usr/lib/root/libFITSIO.so",
+        "/usr/lib/root/libFoam.so",
+        "/usr/lib/root/libforward_listDict.so",
+        "/usr/lib/root/libFumili.so",
+        "/usr/lib/root/libGed.so",
+        "/usr/lib/root/libGenetic.so",
+        "/usr/lib/root/libGenVector.so",
+        "/usr/lib/root/libGeomBuilder.so",
+        "/usr/lib/root/libGeomPainter.so",
+        "/usr/lib/root/libGeom.so",
+        "/usr/lib/root/libGpad.so",
+        "/usr/lib/root/libGraf3d.so",
+        "/usr/lib/root/libGraf.so",
+        "/usr/lib/root/libGuiBld.so",
+        "/usr/lib/root/libGuiHtml.so",
+        "/usr/lib/root/libGui.so",
+        "/usr/lib/root/libGviz3d.so",
+        "/usr/lib/root/libGviz.so",
+        "/usr/lib/root/libGX11.so",
+        "/usr/lib/root/libGX11TTF.so",
+        "/usr/lib/root/libHistFactory.so",
+        "/usr/lib/root/libHistPainter.so",
+        "/usr/lib/root/libHist.so",
+        "/usr/lib/root/libHtml.so",
+        "/usr/lib/root/libJupyROOT.so",
+        "/usr/lib/root/libKrb5Auth.so",
+        "/usr/lib/root/liblistDict.so",
+        "/usr/lib/root/libmap2Dict.so",
+        "/usr/lib/root/libmapDict.so",
+        "/usr/lib/root/libMathCore.so",
+        "/usr/lib/root/libMathMore.so",
+        "/usr/lib/root/libMatrix.so",
+        "/usr/lib/root/libMemStat.so",
+        "/usr/lib/root/libMinuit2.so",
+        "/usr/lib/root/libMinuit.so",
+        "/usr/lib/root/libMLP.so",
+        "/usr/lib/root/libmultimap2Dict.so",
+        "/usr/lib/root/libmultimapDict.so",
+        "/usr/lib/root/libMultiProc.so",
+        "/usr/lib/root/libmultisetDict.so",
+        "/usr/lib/root/libNet.so",
+        "/usr/lib/root/libNew.so",
+        "/usr/lib/root/libPgSQL.so",
+        "/usr/lib/root/libPhysics.so",
+        "/usr/lib/root/libPostscript.so",
+        "/usr/lib/root/libProofBench.so",
+        "/usr/lib/root/libProofDraw.so",
+        "/usr/lib/root/libProofPlayer.so",
+        "/usr/lib/root/libProof.so",
+        "/usr/lib/root/libPyMVA.so",
+        "/usr/lib/root/libPyROOT.so",
+        "/usr/lib/root/libQuadp.so",
+        "/usr/lib/root/libRecorder.so",
+        "/usr/lib/root/libRGL.so",
+        "/usr/lib/root/libRHTTP.so",
+        "/usr/lib/root/libRint.so",
+        "/usr/lib/root/libRIO.so",
+        "/usr/lib/root/libRLDAP.so",
+        "/usr/lib/root/libRMySQL.so",
+        "/usr/lib/root/libRODBC.so",
+        "/usr/lib/root/libRooFitCore.so",
+        "/usr/lib/root/libRooFit.so",
+        "/usr/lib/root/libRooStats.so",
+        "/usr/lib/root/libRootAuth.so",
+        "/usr/lib/root/libRSQLite.so",
+        "/usr/lib/root/libSessionViewer.so",
+        "/usr/lib/root/libsetDict.so",
+        "/usr/lib/root/libSmatrix.so",
+        "/usr/lib/root/libSpectrumPainter.so",
+        "/usr/lib/root/libSpectrum.so",
+        "/usr/lib/root/libSPlot.so",
+        "/usr/lib/root/libSQLIO.so",
+        "/usr/lib/root/libSrvAuth.so",
+        "/usr/lib/root/libThread.so",
+        "/usr/lib/root/libTMVAGui.so",
+        "/usr/lib/root/libTMVA.so",
+        "/usr/lib/root/libTreePlayer.so",
+        "/usr/lib/root/libTree.so",
+        "/usr/lib/root/libTreeViewer.so",
+        "/usr/lib/root/libunordered_mapDict.so",
+        "/usr/lib/root/libunordered_multimapDict.so",
+        "/usr/lib/root/libunordered_multisetDict.so",
+        "/usr/lib/root/libunordered_setDict.so",
+        "/usr/lib/root/libUnuran.so",
+        "/usr/lib/root/libvalarrayDict.so",
+        "/usr/lib/root/libvectorDict.so",
+        "/usr/lib/root/libVMC.so",
+        "/usr/lib/root/libX3d.so",
+        "/usr/lib/root/libXMLIO.so",
+        "/usr/lib/root/libXMLParser.so"
+    ]
+  },
+  "roofit": {
+    "depends" : ["root"]
+  },
+  "roofitcore": {
+    "depends" : ["root"]
+  },
+  "rootcore": {
+    "depends" : ["root"]
+  },
+  "rootgpad": {
+    "depends" : ["root"]
+  },
+  "rootgraphics": {
+    "depends" : ["root"]
+  },
+  "roothistmatrix": {
+    "depends" : ["root"]
+  },
+  "rootinteractive": {
+    "depends" : ["root"]
+  },
+  "rootmath": {
+    "depends" : ["root"]
+  },
+  "rootminuit": {
+    "depends" : ["root"]
+  },
+  "rootminuit2": {
+    "depends" : ["root"]
+  },
+  "rootmlp": {
+    "depends" : ["root"]
+  },
+  "rootphysics": {
+    "depends" : ["root"]
+  },
+  "rootpy": {
+    "depends" : ["root"]
+  },
+  "rootrflx": {
+    "depends" : ["root"]
+  },
+  "rootrint": {
+    "depends" : ["root"]
+  },
+  "roottmva": {
+    "depends" : ["root"]
+  },
+  "rootxmlio": {
+    "depends" : ["root"]
+  },
+  "sherpa": {},
+  "sigcpp": {
+    "includes" : ["/usr/include/sigc++-2.0/", "/usr/lib/sigc++-2.0/include/"]
+  },
+  "sockets": {},
+  "tauola": {},
+  "tauolapp": {},
+  "tbb": {
+    "links" : ["tbb"]
+  },
+  "tcmalloc_minimal": {},
+  "thread": {},
+  "tinyxml": {
+    "links" : ["tinyxml"]
+  },
+  "tkonlineswdb": {},
+  "utm": {},
+  "valgrind": {},
+  "vdt": {},
+  "vdt_headers": {},
+  "xerces-c": {
+    "links" : ["xerces-c"]
+  },
+  "XrdCl" : {},
+  "XrdUtils" : {},
+  "XrdPosixPreload" : {},
+  "xrootd": {},
+  "xz": {},
+  "yoda": {},
+  "zlib": {
+    "links" : ["z", "cfitsio"]
+  }
+}

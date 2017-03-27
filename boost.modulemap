@@ -1,0 +1,67 @@
+
+module boost {
+  module version { header "/usr/include/boost/version.hpp" export * }
+  module config { header "/usr/include/boost/config.hpp" export * }
+  module filesystem {
+    header "/usr/include/boost/filesystem.hpp"
+    header "/usr/include/boost/filesystem/convenience.hpp"
+    header "/usr/include/boost/filesystem/operations.hpp"
+    header "/usr/include/boost/filesystem/path.hpp"
+    export *
+  }
+  //module system_errorcode { header "/usr/include/boost/system/error_code.hpp" export * }
+  module thread {
+    header "/usr/include/boost/thread/thread.hpp"
+    header "/usr/include/boost/thread/tss.hpp"
+    export *
+  }
+  module algorithm_string { header "/usr/include/boost/algorithm/string.hpp" export * }
+  // doesn't work yet: module lexical_cast { header "/usr/include/boost/lexical_cast.hpp" export * }
+  module static_assert { header "/usr/include/boost/static_assert.hpp" export * }
+  
+  module type_traits_is_base_and_derived { header "/usr/include/boost/type_traits/is_base_and_derived.hpp" export * }
+  module regex { header "/usr/include/boost/regex.hpp" export * }
+  module tokenizer { header "/usr/include/boost/tokenizer.hpp" export * }
+
+  module indirect_iterator { header "boost/iterator/indirect_iterator.hpp" export * }
+  module counting_iterator { header "boost/iterator/counting_iterator.hpp" export * }
+  
+  
+  module adjacency_list {
+    header "boost/graph/adjacency_list.hpp"
+    export *
+  }
+  
+  module is_convertible { header "boost/type_traits/is_convertible.hpp" export * }
+  
+  module is_reference { header "boost/type_traits/is_reference.hpp" export * }
+  
+  module hash { header "boost/functional/hash.hpp" export * }
+  
+  module exception { header "boost/exception/exception.hpp" export * }
+  
+  module throw_exception { header "boost/throw_exception.hpp" export * }
+  
+  module tuple { header "boost/tuple/tuple.hpp" export * }
+  
+  module is_function { header "boost/type_traits/is_function.hpp" export * }
+  
+  module addressof { header "/usr/include/boost/utility/addressof.hpp" export * }
+  
+  module ref { header "boost/core/ref.hpp" export * }
+  
+  module unordered_set { header "boost/unordered_set.hpp" export * }
+  
+  module mpl_eval_if { header "boost/mpl/eval_if.hpp" export * }
+  
+  module aligned_storage { header "boost/type_traits/aligned_storage.hpp" export * }
+  
+  module enable_if { header "boost/utility/enable_if.hpp" export * }
+  
+  module is_nothrow { header "boost/type_traits/is_nothrow_move_assignable.hpp" export * }
+  
+  module mpl_placeholders { header "boost/mpl/placeholders.hpp" export * }
+  
+  module is_empty { header "boost/type_traits/is_empty.hpp" export * }
+  
+}
