@@ -89,8 +89,13 @@ class ScramTargetBase:
         # True iff this executable is a test that should be executed.
         self.is_test = False
         self.libs = set()
+        self.cxx_flags = ""
+        self.defines = ""
+        self.ld_flags = ""
+        self.edm_plugin = False
         self.needed_libs = set()
         self.include_dirs = set()
+        self.add_subdir = False
         self.dir = ""
         self.module = None
         self.forwards = set()
@@ -131,21 +136,61 @@ class ScramModuleLibrary(ScramTargetBase):
         self.name = remove_prefix(base_dir)
         self.symbol = self.name.replace("/", "").replace("-", "")
 
+        for child in node:
+            if child.tag == "use" or child.tag == "lib":
+                self.dependencies_by_name.add(get_lib_or_name_attr(child))
+            if child.tag == "flags":
+                for key, value in child.attrib.items():
+                    if "CXXFLAGS" == key or "cppflags" == key or "CPPFLAGS" == key:
+                        self.cxx_flags += " " + value
+                        self.cxx_flags = self.cxx_flags.strip()
+                    elif "CPPDEFINES" == key:
+                        self.defines += " -D" + value
+                        self.defines = self.defines.strip()
+                    elif "LDFLAGS" == key:
+                        self.ld_flags += " " + value
+                        self.ld_flags = self.ld_flags.strip()
+                    elif "EDM_PLUGIN" == key:
+                        if child.attrib["EDM_PLUGIN"] == "1":
+                            self.edm_plugin = True
+                    elif "BIGOBJ_CXXFLAGS" == key:
+                        pass
+                    elif "DROP_DEP" == key:
+                        pass
+                    elif "RIVET_PLUGIN" == key:
+                        pass
+                    elif "GENREFLEX_ARGS" == key:
+                        pass
+                    elif "NO_LIB_CHECKING" == key:
+                        pass
+                    elif "LCG_DICT_XML" == key:
+                        pass
+                    elif "LCG_DICT_HEADER" == key:
+                        pass
+                    elif key.startswith("REM_"):
+                      pass
+                    elif "ADD_SUBDIR" == key:
+                        if value == "1":
+                            self.add_subdir = True
+                    else:
+                        print("Unknown flag type: " + str(child.attrib))
+                    
         cwd_bak = os.path.realpath(os.getcwd())
         os.chdir(base_dir)
-        self.source_files = glob.glob("src/**/*.cc", recursive=True)
-        self.source_files += glob.glob("src/**/*.cpp", recursive=True)
-        self.source_files += glob.glob("src/**/*.cxx", recursive=True)
-        self.source_files += glob.glob("src/**/*.c", recursive=True)
-        self.source_files += glob.glob("src/**/*.C", recursive=True)
+        
+        base_glob = "src/*"
+        if self.add_subdir:
+            base_glob = "src/**/*"
+        
+        self.source_files = glob.glob(base_glob+".cc", recursive=self.add_subdir)
+        self.source_files += glob.glob(base_glob+".cpp", recursive=self.add_subdir)
+        self.source_files += glob.glob(base_glob+".cxx", recursive=self.add_subdir)
+        self.source_files += glob.glob(base_glob+".c", recursive=self.add_subdir)
+        self.source_files += glob.glob(base_glob+".C", recursive=self.add_subdir)
         os.chdir(cwd_bak)
 
         if not self.is_virtual():
             self.libs.add(self.symbol)
-
-        for child in node:
-            if child.tag == "use" or child.tag == "lib":
-                self.dependencies_by_name.add(get_lib_or_name_attr(child))
 
 
 class ScramTarget(ScramTargetBase):
@@ -301,7 +346,7 @@ def parse_BuildFileXml(path):
         # Manually copy all global <use> not inside a <bin>/<library> tag
         # to each of those tags in the current BuildFile.xml
         for topElement in root:
-            if topElement.tag == "use":
+            if topElement.tag == "use" or topElement.tag == "flags":
                 for element in root:
                     if element.tag == "library" or element.tag == "bin":
                         element.append(topElement)
@@ -348,7 +393,15 @@ class CMakeGenerator:
         for dir in target.include_dirs:
             out.write("target_include_directories(" + target.symbol +
                             " PUBLIC " + dir + ")\n")
-        out.write("\n")
+        
+        if len(target.cxx_flags) != 0:
+            out.write("target_compile_definitions(" + target.symbol
+                      + " PUBLIC " + target.cxx_flags + ")\n")
+
+        if len(target.ld_flags.strip()) != 0:
+            out.write("# Manually defined LD_FLAGS\n")
+            out.write("target_link_libraries(" + target.symbol + 
+                      " " + target.ld_flags + ")\n")
 
         if len(target.needed_libs) != 0:
             out.write("target_link_libraries(" + target.symbol + "\n")
