@@ -490,7 +490,7 @@ class CMakeGenerator:
                           "-Wno-deprecated-declarations -std=c++14\")\n")
         if cxxmodules:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} "
-                              "-fmodules -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/  -Xclang -fmodules-local-submodule-visibility\")\n")
+                              "-fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/  -Xclang -fmodules-local-submodule-visibility\")\n")
 
         subsystem_list = []
         for subsystem in self.project.subsystems:
