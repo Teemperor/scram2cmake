@@ -19,7 +19,6 @@ module boost {
   // doesn't work yet: module lexical_cast { header "/usr/include/boost/lexical_cast.hpp" export * }
   module static_assert { header "/usr/include/boost/static_assert.hpp" export * }
   
-  module type_traits_is_base_and_derived { header "/usr/include/boost/type_traits/is_base_and_derived.hpp" export * }
   module regex { header "/usr/include/boost/regex.hpp" export * }
   module tokenizer { header "/usr/include/boost/tokenizer.hpp" export * }
 
@@ -32,9 +31,6 @@ module boost {
     export *
   }
   
-  module is_convertible { header "boost/type_traits/is_convertible.hpp" export * }
-  
-  module is_reference { header "boost/type_traits/is_reference.hpp" export * }
   
   module hash { header "boost/functional/hash.hpp" export * }
   
@@ -44,8 +40,6 @@ module boost {
   
   module tuple { header "boost/tuple/tuple.hpp" export * }
   
-  module is_function { header "boost/type_traits/is_function.hpp" export * }
-  
   module addressof { header "/usr/include/boost/utility/addressof.hpp" export * }
   
   module ref { header "boost/core/ref.hpp" export * }
@@ -53,15 +47,153 @@ module boost {
   module unordered_set { header "boost/unordered_set.hpp" export * }
   
   module mpl_eval_if { header "boost/mpl/eval_if.hpp" export * }
-  
-  module aligned_storage { header "boost/type_traits/aligned_storage.hpp" export * }
-  
+
   module enable_if { header "boost/utility/enable_if.hpp" export * }
-  
-  module is_nothrow { header "boost/type_traits/is_nothrow_move_assignable.hpp" export * }
   
   module mpl_placeholders { header "boost/mpl/placeholders.hpp" export * }
   
-  module is_empty { header "boost/type_traits/is_empty.hpp" export * }
-  
+  module "add_const.hpp" { header "boost/type_traits/add_const.hpp" export * }
+  module "add_cv.hpp" { header "boost/type_traits/add_cv.hpp" export * }
+  module "add_lvalue_reference.hpp" { header "boost/type_traits/add_lvalue_reference.hpp" export * }
+  module "add_pointer.hpp" { header "boost/type_traits/add_pointer.hpp" export * }
+  module "add_reference.hpp" { header "boost/type_traits/add_reference.hpp" export * }
+  module "add_rvalue_reference.hpp" { header "boost/type_traits/add_rvalue_reference.hpp" export * }
+  module "add_volatile.hpp" { header "boost/type_traits/add_volatile.hpp" export * }
+  module "aligned_storage.hpp" { header "boost/type_traits/aligned_storage.hpp" export * }
+  module "alignment_of.hpp" { header "boost/type_traits/alignment_of.hpp" export * }
+  module "alignment_traits.hpp" { header "boost/type_traits/alignment_traits.hpp" export * }
+  module "arithmetic_traits.hpp" { header "boost/type_traits/arithmetic_traits.hpp" export * }
+  module "array_traits.hpp" { header "boost/type_traits/array_traits.hpp" export * }
+  module "broken_compiler_spec.hpp" { header "boost/type_traits/broken_compiler_spec.hpp" export * }
+  module "common_type.hpp" { header "boost/type_traits/common_type.hpp" export * }
+  module "composite_traits.hpp" { header "boost/type_traits/composite_traits.hpp" export * }
+  module "conditional.hpp" { header "boost/type_traits/conditional.hpp" export * }
+  module "config.hpp" { header "boost/type_traits/config.hpp" export * }
+  module "conversion_traits.hpp" { header "boost/type_traits/conversion_traits.hpp" export * }
+  module "copy_cv.hpp" { header "boost/type_traits/copy_cv.hpp" export * }
+  module "cv_traits.hpp" { header "boost/type_traits/cv_traits.hpp" export * }
+  module "decay.hpp" { header "boost/type_traits/decay.hpp" export * }
+  module "declval.hpp" { header "boost/type_traits/declval.hpp" export * }
+  module "extent.hpp" { header "boost/type_traits/extent.hpp" export * }
+  module "floating_point_promotion.hpp" { header "boost/type_traits/floating_point_promotion.hpp" export * }
+  module "function_traits.hpp" { header "boost/type_traits/function_traits.hpp" export * }
+  module "has_bit_and_assign.hpp" { header "boost/type_traits/has_bit_and_assign.hpp" export * }
+  module "has_bit_and.hpp" { header "boost/type_traits/has_bit_and.hpp" export * }
+  module "has_bit_or_assign.hpp" { header "boost/type_traits/has_bit_or_assign.hpp" export * }
+  module "has_bit_or.hpp" { header "boost/type_traits/has_bit_or.hpp" export * }
+  module "has_bit_xor_assign.hpp" { header "boost/type_traits/has_bit_xor_assign.hpp" export * }
+  module "has_bit_xor.hpp" { header "boost/type_traits/has_bit_xor.hpp" export * }
+  module "has_complement.hpp" { header "boost/type_traits/has_complement.hpp" export * }
+  module "has_dereference.hpp" { header "boost/type_traits/has_dereference.hpp" export * }
+  module "has_divides_assign.hpp" { header "boost/type_traits/has_divides_assign.hpp" export * }
+  module "has_divides.hpp" { header "boost/type_traits/has_divides.hpp" export * }
+  module "has_equal_to.hpp" { header "boost/type_traits/has_equal_to.hpp" export * }
+  module "has_greater_equal.hpp" { header "boost/type_traits/has_greater_equal.hpp" export * }
+  module "has_greater.hpp" { header "boost/type_traits/has_greater.hpp" export * }
+  module "has_left_shift_assign.hpp" { header "boost/type_traits/has_left_shift_assign.hpp" export * }
+  module "has_left_shift.hpp" { header "boost/type_traits/has_left_shift.hpp" export * }
+  module "has_less_equal.hpp" { header "boost/type_traits/has_less_equal.hpp" export * }
+  module "has_less.hpp" { header "boost/type_traits/has_less.hpp" export * }
+  module "has_logical_and.hpp" { header "boost/type_traits/has_logical_and.hpp" export * }
+  module "has_logical_not.hpp" { header "boost/type_traits/has_logical_not.hpp" export * }
+  module "has_logical_or.hpp" { header "boost/type_traits/has_logical_or.hpp" export * }
+  module "has_minus_assign.hpp" { header "boost/type_traits/has_minus_assign.hpp" export * }
+  module "has_minus.hpp" { header "boost/type_traits/has_minus.hpp" export * }
+  module "has_modulus_assign.hpp" { header "boost/type_traits/has_modulus_assign.hpp" export * }
+  module "has_modulus.hpp" { header "boost/type_traits/has_modulus.hpp" export * }
+  module "has_multiplies_assign.hpp" { header "boost/type_traits/has_multiplies_assign.hpp" export * }
+  module "has_multiplies.hpp" { header "boost/type_traits/has_multiplies.hpp" export * }
+  module "has_negate.hpp" { header "boost/type_traits/has_negate.hpp" export * }
+  module "has_new_operator.hpp" { header "boost/type_traits/has_new_operator.hpp" export * }
+  module "has_not_equal_to.hpp" { header "boost/type_traits/has_not_equal_to.hpp" export * }
+  module "has_nothrow_assign.hpp" { header "boost/type_traits/has_nothrow_assign.hpp" export * }
+  module "has_nothrow_constructor.hpp" { header "boost/type_traits/has_nothrow_constructor.hpp" export * }
+  module "has_nothrow_copy.hpp" { header "boost/type_traits/has_nothrow_copy.hpp" export * }
+  module "has_nothrow_destructor.hpp" { header "boost/type_traits/has_nothrow_destructor.hpp" export * }
+  module "has_operator.hpp" { header "boost/type_traits/has_operator.hpp" export * }
+  module "has_plus_assign.hpp" { header "boost/type_traits/has_plus_assign.hpp" export * }
+  module "has_plus.hpp" { header "boost/type_traits/has_plus.hpp" export * }
+  module "has_post_decrement.hpp" { header "boost/type_traits/has_post_decrement.hpp" export * }
+  module "has_post_increment.hpp" { header "boost/type_traits/has_post_increment.hpp" export * }
+  module "has_pre_decrement.hpp" { header "boost/type_traits/has_pre_decrement.hpp" export * }
+  module "has_pre_increment.hpp" { header "boost/type_traits/has_pre_increment.hpp" export * }
+  module "has_right_shift_assign.hpp" { header "boost/type_traits/has_right_shift_assign.hpp" export * }
+  module "has_right_shift.hpp" { header "boost/type_traits/has_right_shift.hpp" export * }
+  module "has_trivial_assign.hpp" { header "boost/type_traits/has_trivial_assign.hpp" export * }
+  module "has_trivial_constructor.hpp" { header "boost/type_traits/has_trivial_constructor.hpp" export * }
+  module "has_trivial_copy.hpp" { header "boost/type_traits/has_trivial_copy.hpp" export * }
+  module "has_trivial_destructor.hpp" { header "boost/type_traits/has_trivial_destructor.hpp" export * }
+  module "has_trivial_move_assign.hpp" { header "boost/type_traits/has_trivial_move_assign.hpp" export * }
+  module "has_trivial_move_constructor.hpp" { header "boost/type_traits/has_trivial_move_constructor.hpp" export * }
+  module "has_unary_minus.hpp" { header "boost/type_traits/has_unary_minus.hpp" export * }
+  module "has_unary_plus.hpp" { header "boost/type_traits/has_unary_plus.hpp" export * }
+  module "has_virtual_destructor.hpp" { header "boost/type_traits/has_virtual_destructor.hpp" export * }
+  module "ice.hpp" { header "boost/type_traits/ice.hpp" export * }
+  module "integral_constant.hpp" { header "boost/type_traits/integral_constant.hpp" export * }
+  module "integral_promotion.hpp" { header "boost/type_traits/integral_promotion.hpp" export * }
+  module "intrinsics.hpp" { header "boost/type_traits/intrinsics.hpp" export * }
+  module "is_abstract.hpp" { header "boost/type_traits/is_abstract.hpp" export * }
+  module "is_arithmetic.hpp" { header "boost/type_traits/is_arithmetic.hpp" export * }
+  module "is_array.hpp" { header "boost/type_traits/is_array.hpp" export * }
+  module "is_assignable.hpp" { header "boost/type_traits/is_assignable.hpp" export * }
+  module "is_base_and_derived.hpp" { header "boost/type_traits/is_base_and_derived.hpp" export * }
+  module "is_base_of.hpp" { header "boost/type_traits/is_base_of.hpp" export * }
+  module "is_base_of_tr1.hpp" { header "boost/type_traits/is_base_of_tr1.hpp" export * }
+  module "is_class.hpp" { header "boost/type_traits/is_class.hpp" export * }
+  module "is_complex.hpp" { header "boost/type_traits/is_complex.hpp" export * }
+  module "is_compound.hpp" { header "boost/type_traits/is_compound.hpp" export * }
+  module "is_const.hpp" { header "boost/type_traits/is_const.hpp" export * }
+  module "is_constructible.hpp" { header "boost/type_traits/is_constructible.hpp" export * }
+  module "is_convertible.hpp" { header "boost/type_traits/is_convertible.hpp" export * }
+  module "is_copy_assignable.hpp" { header "boost/type_traits/is_copy_assignable.hpp" export * }
+  module "is_copy_constructible.hpp" { header "boost/type_traits/is_copy_constructible.hpp" export * }
+  module "is_default_constructible.hpp" { header "boost/type_traits/is_default_constructible.hpp" export * }
+  module "is_destructible.hpp" { header "boost/type_traits/is_destructible.hpp" export * }
+  module "is_empty.hpp" { header "boost/type_traits/is_empty.hpp" export * }
+  module "is_enum.hpp" { header "boost/type_traits/is_enum.hpp" export * }
+  module "is_final.hpp" { header "boost/type_traits/is_final.hpp" export * }
+  module "is_float.hpp" { header "boost/type_traits/is_float.hpp" export * }
+  module "is_floating_point.hpp" { header "boost/type_traits/is_floating_point.hpp" export * }
+  module "is_function.hpp" { header "boost/type_traits/is_function.hpp" export * }
+  module "is_fundamental.hpp" { header "boost/type_traits/is_fundamental.hpp" export * }
+  module "is_integral.hpp" { header "boost/type_traits/is_integral.hpp" export * }
+  module "is_lvalue_reference.hpp" { header "boost/type_traits/is_lvalue_reference.hpp" export * }
+  module "is_member_function_pointer.hpp" { header "boost/type_traits/is_member_function_pointer.hpp" export * }
+  module "is_member_object_pointer.hpp" { header "boost/type_traits/is_member_object_pointer.hpp" export * }
+  module "is_member_pointer.hpp" { header "boost/type_traits/is_member_pointer.hpp" export * }
+  module "is_nothrow_move_assignable.hpp" { header "boost/type_traits/is_nothrow_move_assignable.hpp" export * }
+  module "is_nothrow_move_constructible.hpp" { header "boost/type_traits/is_nothrow_move_constructible.hpp" export * }
+  module "is_object.hpp" { header "boost/type_traits/is_object.hpp" export * }
+  module "is_pod.hpp" { header "boost/type_traits/is_pod.hpp" export * }
+  module "is_pointer.hpp" { header "boost/type_traits/is_pointer.hpp" export * }
+  module "is_polymorphic.hpp" { header "boost/type_traits/is_polymorphic.hpp" export * }
+  module "is_reference.hpp" { header "boost/type_traits/is_reference.hpp" export * }
+  module "is_rvalue_reference.hpp" { header "boost/type_traits/is_rvalue_reference.hpp" export * }
+  module "is_same.hpp" { header "boost/type_traits/is_same.hpp" export * }
+  module "is_scalar.hpp" { header "boost/type_traits/is_scalar.hpp" export * }
+  module "is_signed.hpp" { header "boost/type_traits/is_signed.hpp" export * }
+  module "is_stateless.hpp" { header "boost/type_traits/is_stateless.hpp" export * }
+  module "is_union.hpp" { header "boost/type_traits/is_union.hpp" export * }
+  module "is_unsigned.hpp" { header "boost/type_traits/is_unsigned.hpp" export * }
+  module "is_virtual_base_of.hpp" { header "boost/type_traits/is_virtual_base_of.hpp" export * }
+  module "is_void.hpp" { header "boost/type_traits/is_void.hpp" export * }
+  module "is_volatile.hpp" { header "boost/type_traits/is_volatile.hpp" export * }
+  module "make_signed.hpp" { header "boost/type_traits/make_signed.hpp" export * }
+  module "make_unsigned.hpp" { header "boost/type_traits/make_unsigned.hpp" export * }
+  module "object_traits.hpp" { header "boost/type_traits/object_traits.hpp" export * }
+  module "promote.hpp" { header "boost/type_traits/promote.hpp" export * }
+  module "rank.hpp" { header "boost/type_traits/rank.hpp" export * }
+  module "reference_traits.hpp" { header "boost/type_traits/reference_traits.hpp" export * }
+  module "remove_all_extents.hpp" { header "boost/type_traits/remove_all_extents.hpp" export * }
+  module "remove_bounds.hpp" { header "boost/type_traits/remove_bounds.hpp" export * }
+  module "remove_const.hpp" { header "boost/type_traits/remove_const.hpp" export * }
+  module "remove_cv.hpp" { header "boost/type_traits/remove_cv.hpp" export * }
+  module "remove_extent.hpp" { header "boost/type_traits/remove_extent.hpp" export * }
+  module "remove_pointer.hpp" { header "boost/type_traits/remove_pointer.hpp" export * }
+  module "remove_reference.hpp" { header "boost/type_traits/remove_reference.hpp" export * }
+  module "remove_volatile.hpp" { header "boost/type_traits/remove_volatile.hpp" export * }
+  module "same_traits.hpp" { header "boost/type_traits/same_traits.hpp" export * }
+  module "transform_traits.hpp" { header "boost/type_traits/transform_traits.hpp" export * }
+  module "type_identity.hpp" { header "boost/type_traits/type_identity.hpp" export * }
+  module "type_with_alignment.hpp" { header "boost/type_traits/type_with_alignment.hpp" export * }
 }
