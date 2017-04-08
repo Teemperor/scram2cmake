@@ -108,10 +108,13 @@ module "stl" {
     export *
     header "cstdio"
   }
-  module "cstdlib" {
-    export *
-    header "cstdlib"
-  }
+  // builtin modules seem to include this
+  // and this in turn includes builtin module.
+  // So let's get this from the modulemap
+  //module "cstdlib" {
+  //  export *
+  //  header "cstdlib"
+  //}
   module "cstring" {
     export *
     header "cstring"

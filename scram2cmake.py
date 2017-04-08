@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os, glob, shutil, sys
+import os, glob, shutil, sys, subprocess, re
 import xml.etree.ElementTree as ET
 import json
 
@@ -60,6 +60,34 @@ def get_files(node, base_dir):
                     result.remove(to_remove)
     return result
 
+# WIP code....
+class RootDict:
+    def __init__(self, classes_h, classes_xml):
+        r = re.compile('[^a-zA-Z0-9_]')
+        self.unique_name = r.sub('', remove_prefix(classes_h))
+        self.cpp_file = self.unique_name + "_rflx.cpp"
+        self.classes_h = classes_h
+        self.classes_xml = classes_xml
+        
+    def cmake_target(self):
+        return self.unique_name
+    
+    def cmake_command(self):
+        classes_arg = ""
+        classes_dep = ""
+        if self.classes_xml != None:
+            classes_arg = " -s " + self.classes_xml
+            classes_dep = " " + self.classes_xml
+        
+        command = ("add_custom_command(\n"
+           "  OUTPUT ${CMAKE_BINARY_DIR}/" + self.cpp_file + "\n" +
+           "  COMMAND genreflex " + self.classes_h + " -I${CMAKE_SOURCE_DIR} " +
+              " -o ${CMAKE_BINARY_DIR}/" + self.cpp_file + classes_arg + "\n" +
+           "  DEPENDS " + self.classes_h + classes_dep + "\n" +
+           "  COMMENT \"Generating ROOT dict " + self.unique_name + "\")\n"
+              ) 
+        return command
+
 # Abstract base class for anything that can be built by SCRAM.
 class ScramTargetBase:
     def __init__(self):
@@ -99,7 +127,9 @@ class ScramTargetBase:
         self.dir = ""
         self.module = None
         self.forwards = set()
-
+        self.was_linked = False
+        self.root_dict = None
+        
     def link_dependencies(self):
         for forward in self.forwards:
             self.libs |= self.project.get_target(forward).libs
@@ -111,10 +141,17 @@ class ScramTargetBase:
                 self.dependencies.add(target)
             except FileNotFoundError as e:
                 print("Warning: Dependency " + dependency + " not found!")
-
+                
+    def link(self):
+        if self.was_linked:
+            return
+        self.was_linked = True
         for dependency in self.dependencies:
+            dependency.link()
             self.include_dirs |= dependency.include_dirs
             self.needed_libs |= dependency.libs
+            if self.is_virtual():
+                self.libs |= dependency.libs
 
     def is_virtual(self):
         return len(self.source_files) == 0
@@ -187,6 +224,15 @@ class ScramModuleLibrary(ScramTargetBase):
         self.source_files += glob.glob(base_glob+".cxx", recursive=self.add_subdir)
         self.source_files += glob.glob(base_glob+".c", recursive=self.add_subdir)
         self.source_files += glob.glob(base_glob+".C", recursive=self.add_subdir)
+        
+        if os.path.isfile("src/classes.h"):
+            classes_xml = None
+            classes_h = os.path.realpath("src/classes.h")
+            if os.path.isfile("src/classes_def.xml"):
+                classes_xml = os.path.realpath("src/classes_def.xml")
+            self.root_dict = RootDict(classes_h, classes_xml)
+            self.source_files.append("${CMAKE_BINARY_DIR}/" + self.root_dict.cpp_file)
+        
         os.chdir(cwd_bak)
 
         if not self.is_virtual():
@@ -290,7 +336,12 @@ class ScramProject:
                 m.forwards |= set(value["depends"])
 
             if "links" in value:
-                m.libs |= set(value["links"])
+                for l in value["links"]:
+                    if l.startswith("r:"):
+                        found_libs = glob.glob(l[2:])
+                        m.libs |= set(found_libs)
+                    else:
+                        m.libs.add(l)
 
             self.add_target(m)
 
@@ -334,6 +385,8 @@ class ScramProject:
     def resolve_dependencies(self):
         for target in self.targets.values():
             target.link_dependencies()
+        for target in self.targets.values():
+            target.link()
 
 # Takes a path to a BuildFile.xml and transforms it into an XML node.
 # Also does some preprocessing like handling global <use> tags...
@@ -379,6 +432,10 @@ class CMakeGenerator:
     def generate_target(self, target, out):
         if target.is_virtual():
             return
+            
+        if target.root_dict != None:
+            out.write(target.root_dict.cmake_command())
+            out.write("\n")
 
         if target.is_executable:
             out.write("add_executable(")
@@ -394,9 +451,16 @@ class CMakeGenerator:
             out.write("target_include_directories(" + target.symbol +
                             " PUBLIC " + dir + ")\n")
         
-        if len(target.cxx_flags) != 0:
+        if len(target.defines) != 0:
             out.write("target_compile_definitions(" + target.symbol
-                      + " PUBLIC " + target.cxx_flags + ")\n")
+                      + " PUBLIC " + target.defines + ")\n")
+
+        if len(target.cxx_flags) != 0:
+            out.write("set_source_files_properties(\n")
+            for source in target.source_files:
+                out.write("\n  " + source)
+            out.write("\n")
+            out.write("PROPERTIES COMPILE_FLAGS \"" + target.cxx_flags + "\")\n")
 
         if len(target.ld_flags.strip()) != 0:
             out.write("# Manually defined LD_FLAGS\n")
@@ -442,6 +506,9 @@ class CMakeGenerator:
     def handle_subsystem(self, subsystem, subsystem_modules):
         subsystem_cmake = open(subsystem + os.sep + "CMakeLists.txt", "w")
         for module in subsystem_modules:
+            # FIXME: Another StaticAnalyzer check that is just an ugly hack...
+            if module.package == "StaticAnalyzers":
+                continue
             subsystem_cmake.write("add_subdirectory(" + module.package + ")\n")
 
         subsystem_cmake.write("\n\n")
@@ -486,11 +553,11 @@ class CMakeGenerator:
         for d in include_paths:
             output_file.write("include_directories(" + d + ")\n")
 
-        output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -pthread -Wno-attributes "
-                          "-Wno-deprecated-declarations -std=c++14\")\n")
+        output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -pthread -march=native -Wno-attributes "
+                          "-Wno-deprecated-declarations -Wno-deprecated-register -Wno-null-dereference -std=c++14\")\n")
         if cxxmodules:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} "
-                              "-fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/  -Xclang -fmodules-local-submodule-visibility\")\n")
+                              "-fmodules -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
 
         subsystem_list = []
         for subsystem in self.project.subsystems:
@@ -594,9 +661,20 @@ class CMakeGenerator:
                 for target in module.targets:
                     self.handle_target(target)
 
-
+# Dummy code in test normal dict generation doesn't work for some reason...
+def make_dicts():
+    for root, dirs, files in os.walk("."):
+        if root.endswith("/src") and  "classes.h" in files:
+            has_xml = ("classes_def.xml" in files)
+            command = "genreflex classes.h -I" + os.getcwd()
+            if has_xml:
+                command += " -s classes_def.xml"
+            print("Generating dict for " + root)
+            subprocess.call(command, shell=True, cwd=root)
 
 def main():
+    #make_dicts()
+
     # Create an empty ScramProject
     project = ScramProject()
 
