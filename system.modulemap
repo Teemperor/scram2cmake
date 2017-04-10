@@ -1,4 +1,12 @@
 
+module libc {
+    module "stdio.h" { header "stdio.h" export * }
+}
+
+module tbb {
+    module task { header "tbb/task.h" export * }
+}
+
 module boost {
   module version { header "/usr/include/boost/version.hpp" export * }
   module config { header "/usr/include/boost/config.hpp" export * }
@@ -24,13 +32,17 @@ module boost {
 
   module indirect_iterator { header "boost/iterator/indirect_iterator.hpp" export * }
   module counting_iterator { header "boost/iterator/counting_iterator.hpp" export * }
-  
+
+  module python { header "boost/python.hpp" export * }
+  module def_helper { header "boost/python/detail/def_helper.hpp" export * }
+  module python_class { header "boost/python/class.hpp" export * }  
   
   module adjacency_list {
     header "boost/graph/adjacency_list.hpp"
     export *
   }
-  
+
+  module transform_iterator { header "boost/iterator/transform_iterator.hpp" export * }  
   
   module hash { header "boost/functional/hash.hpp" export * }
   
@@ -189,7 +201,8 @@ module boost {
   module "remove_const.hpp" { header "boost/type_traits/remove_const.hpp" export * }
   module "remove_cv.hpp" { header "boost/type_traits/remove_cv.hpp" export * }
   module "remove_extent.hpp" { header "boost/type_traits/remove_extent.hpp" export * }
-  module "remove_pointer.hpp" { header "boost/type_traits/remove_pointer.hpp" export * }
+  // Doesn't work, can't find BOOST_WORKAROUND...
+  //module "remove_pointer.hpp" { header "boost/type_traits/remove_pointer.hpp" export * }
   module "remove_reference.hpp" { header "boost/type_traits/remove_reference.hpp" export * }
   module "remove_volatile.hpp" { header "boost/type_traits/remove_volatile.hpp" export * }
   module "same_traits.hpp" { header "boost/type_traits/same_traits.hpp" export * }

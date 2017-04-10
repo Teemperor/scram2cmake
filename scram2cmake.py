@@ -15,6 +15,13 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 cxxmodules = False
 perHeaderModules = False
 
+ignored_headers = [
+  "DataFormats/Common/interface/AssociativeIterator.h"
+]
+textual_headers = [
+  "FWCore/Utilities/src/Guid.h"
+]
+
 # Handle command line arguments
 for arg in sys.argv[1:]:
     if arg == "--per-header":
@@ -599,6 +606,8 @@ class CMakeGenerator:
                 if not perHeaderModules:
                     m.write("module \"" + target.symbol + "\" {\n")
                     for file in os.listdir(dir_path):
+                        if file in ignored_headers:
+                            continue
                         if (file.endswith(".h") or
                             file.endswith(".hh") or
                             file.endswith(".icc") or
@@ -606,9 +615,25 @@ class CMakeGenerator:
 
                             full_path = dir_path + file;
                             m.write("  ")
-                            if not (file.endswith(".h") or file.endswith(".hh")):
+                            if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh")):
                                 m.write("textual ")
                             m.write("header \"" + full_path + "\"\n")
+                    m.write ("  // internal headers\n")
+                    dir_path = target.dir + "/src/"
+                    if os.path.isdir(dir_path):
+                        for file in os.listdir(target.dir + "/src/"):
+                            if file in ignored_headers:
+                                continue
+                            if (file.endswith(".h") or
+                                file.endswith(".hh") or
+                                file.endswith(".icc") or
+                                file.endswith(".inc")):
+
+                                full_path = dir_path + file;
+                                m.write("  ")
+                                if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh")):
+                                    m.write("textual ")
+                                m.write("header \"" + full_path + "\"\n")
                     m.write("  export *\n}\n\n")
                 else: # if per header modules
                     for file in os.listdir(target.dir + "/interface/"):
@@ -619,8 +644,8 @@ class CMakeGenerator:
                             "    header \"" + full_path + "\"\n" +
                             "    export *\n" +
                             "}\n\n"
-                            )
 
+                            )
 
         m.close()
         # Copy/create cxxmodule specific files in folder
@@ -635,7 +660,7 @@ class CMakeGenerator:
   { 'name': '/usr/include/', 'type': 'directory',
     'contents': [
       { 'name' : 'module.modulemap', 'type': 'file',
-        'external-contents': '""" + prefix + """boost.modulemap'
+        'external-contents': '""" + prefix + """system.modulemap'
       }
     ]
   },
@@ -652,7 +677,7 @@ class CMakeGenerator:
                )
             m.close()
             shutil.copyfile(os.path.join(script_dir, "stl.modulemap"), "stl.modulemap")
-            shutil.copyfile(os.path.join(script_dir, "boost.modulemap"), "boost.modulemap")
+            shutil.copyfile(os.path.join(script_dir, "system.modulemap"), "system.modulemap")
 
     def gen(self):
         self.gen_top_level()
