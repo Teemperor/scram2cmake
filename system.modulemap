@@ -1,10 +1,35 @@
 
 module libc {
     module "stdio.h" { header "stdio.h" export * }
+    module "stdint.h" { header "stdint.h" export * }
+    export *
 }
 
 module tbb {
     module task { header "tbb/task.h" export * }
+    module concurrent_queue { header "tbb/concurrent_queue.h" export * }
+    module concurrent_unordered_map { header "tbb/concurrent_unordered_map.h" export * }
+    module parallel_for { header "tbb/parallel_for.h" export * }
+    export *
+}
+
+module cppunit {
+    module helper_macros { header "cppunit/extensions/HelperMacros.h" export * }
+}
+
+module linux {
+    module uuid { header "uuid/uuid.h" export * }
+    export *
+
+}
+
+module sys {
+    module types { header "sys/types.h" export * }
+}
+
+module tiny_xml {
+    header "tinyxml.h"
+    export *
 }
 
 module boost {
@@ -41,6 +66,8 @@ module boost {
     header "boost/graph/adjacency_list.hpp"
     export *
   }
+
+
 
   module transform_iterator { header "boost/iterator/transform_iterator.hpp" export * }  
   

@@ -14,12 +14,16 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 # Options for enabling/disabling cxxmodules
 cxxmodules = False
 perHeaderModules = False
+printTextualHeaders = False
 
 ignored_headers = [
   "DataFormats/Common/interface/AssociativeIterator.h"
 ]
 textual_headers = [
-  "FWCore/Utilities/src/Guid.h"
+  "FWCore/Utilities/src/Guid.h",
+  "FWCore/Utilities/interface/Signal.h",
+  "FWCore/Framework/src/ProductResolvers.h",
+  "FWCore/Framework/src/UnscheduledAuxiliary.h"
 ]
 
 # Handle command line arguments
@@ -29,6 +33,8 @@ for arg in sys.argv[1:]:
         cxxmodules = True
     elif arg == "--modules":
         cxxmodules = True
+    elif arg == "-H":
+        printTextualHeaders = True
     else:
         print("Unknown arg: " + arg)
         exit(1)
@@ -550,6 +556,10 @@ class CMakeGenerator:
         output_file.write("project(CMSSW)\n\n")
         output_file.write("include_directories(${CMAKE_SOURCE_DIR})\n")
         output_file.write("include_directories(/usr/include/)\n")
+        output_file.write("if(\"${CMAKE_CXX_COMPILER_ID}\" STREQUAL \"Clang\")\n")
+        output_file.write("  set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -Xclang -fcolor-diagnostics\")\n")
+        output_file.write("endif()\n")
+        
 
         include_paths = set()
 
@@ -564,7 +574,10 @@ class CMakeGenerator:
                           "-Wno-deprecated-declarations -Wno-deprecated-register -Wno-null-dereference -std=c++14\")\n")
         if cxxmodules:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} "
-                              "-fmodules -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
+                              "-fmodules -H -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
+        if printTextualHeaders:
+            output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -H\")\n")
+
 
         subsystem_list = []
         for subsystem in self.project.subsystems:
@@ -596,6 +609,22 @@ class CMakeGenerator:
         if cxxmodules:
           self.gen_module_map()
 
+    def get_headers(self, path):
+        result = set()
+        result |= set(glob.glob(path + "**/*.h", recursive=True))
+        for s in result:
+            if s.endswith("/classes.h"):
+                result.remove(s)
+                break
+        
+        result |= set(glob.glob(path + "**/*.hh", recursive=True))
+        result |= set(glob.glob(path + "**/*.icc", recursive=True))
+        result |= set(glob.glob(path + "**/*.inc", recursive=True))
+        result = list(result)
+        result.sort()
+        
+        return result
+
     def gen_module_map(self):
         m = open("module.modulemap", "w")
         for module in self.project.modules:
@@ -604,8 +633,9 @@ class CMakeGenerator:
             dir_path = target.dir + "/interface/";
             if os.path.isdir(dir_path):
                 if not perHeaderModules:
-                    m.write("module \"" + target.symbol + "\" {\n")
-                    for file in os.listdir(dir_path):
+                    m.write("module " + target.symbol + " {\n")
+                    
+                    for file in self.get_headers(dir_path):
                         if file in ignored_headers:
                             continue
                         if (file.endswith(".h") or
@@ -613,15 +643,18 @@ class CMakeGenerator:
                             file.endswith(".icc") or
                             file.endswith(".inc")):
 
-                            full_path = dir_path + file;
-                            m.write("  ")
+                            full_path = file;
+                            module_name = full_path[len(dir_path):]
+                            
+                            m.write("  module \"" + module_name + "\" { ");
                             if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh")):
                                 m.write("textual ")
-                            m.write("header \"" + full_path + "\"\n")
-                    m.write ("  // internal headers\n")
+                            m.write("header \"" + full_path + "\" export * }\n")
                     dir_path = target.dir + "/src/"
-                    if os.path.isdir(dir_path):
-                        for file in os.listdir(target.dir + "/src/"):
+                    internal_headers = self.get_headers(dir_path)
+                    if len(internal_headers) != 0:
+                        m.write ("  // internal headers\n")
+                        for file in internal_headers:
                             if file in ignored_headers:
                                 continue
                             if (file.endswith(".h") or
@@ -629,7 +662,8 @@ class CMakeGenerator:
                                 file.endswith(".icc") or
                                 file.endswith(".inc")):
 
-                                full_path = dir_path + file;
+                                full_path = file;
+                                # We could make them private in theory... m.write("  private ")
                                 m.write("  ")
                                 if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh")):
                                     m.write("textual ")
