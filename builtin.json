@@ -149,7 +149,9 @@
   "pyclang": {},
   "pydata": {},
   "pythia6": {},
-  "pythia8": {},
+  "pythia8": {
+    "includes" : ["/usr/include/Pythia8/"]
+  },
   "RGL" : {},
   "rivet": {},
   "root": {
