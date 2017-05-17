@@ -17,13 +17,19 @@ perHeaderModules = False
 printTextualHeaders = False
 
 ignored_headers = [
-  "DataFormats/Common/interface/AssociativeIterator.h"
+  # CMS things
+  "DataFormats/Common/interface/AssociativeIterator.h",
+  "DataFormats/Math/interface/AVXVec.h", # Can't be used alone, needs Vec4 definition.
+  "GeneratorInterface/Core/interface/RNDMEngineAccess.h", # Obsolete header
+  "GeneratorInterface/Pythia8Interface/interface/RandomP8.h", # Obsolete header
+  "Geometry/Records/interface/GeometricDetExtraRcd.h", # Obsolete header
 ]
 textual_headers = [
   "FWCore/Utilities/src/Guid.h",
   "FWCore/Utilities/interface/Signal.h",
   "FWCore/Framework/src/ProductResolvers.h",
-  "FWCore/Framework/src/UnscheduledAuxiliary.h"
+  "FWCore/Framework/src/UnscheduledAuxiliary.h",
+  "DataFormats/GeometryVector/interface/Basic3DVectorLD.h", # Different Basic3DVector templates that it depends on here...
 ]
 
 # Handle command line arguments
@@ -540,8 +546,25 @@ class CMakeGenerator:
             for module in subsystem_modules:
                 for target in module.targets:
                     # FIXME: The StaticAnalyzer check is just an ugly hack...
-                    if target.built_by_cmake() and target.symbol != "UtilitiesStaticAnalyzers":
+                   if target.built_by_cmake() and target.symbol != "UtilitiesStaticAnalyzers":
                         subsystem_cmake.write("\n  " + target.symbol)
+            subsystem_cmake.write("\n)\n")
+
+        has_buildable_mainlib = False
+        for module in subsystem_modules:
+            target = module.main_lib
+            if target.built_by_cmake():
+                has_buildable_mainlib = True
+                break
+
+        if has_buildable_mainlib:
+            subsystem_cmake.write("# Meta-target that builds all libs in this subsystem\n")
+            subsystem_cmake.write("add_custom_target(" + subsystem + "_libs)\n")
+            subsystem_cmake.write("add_dependencies(" + subsystem + "_libs")
+            for module in subsystem_modules:
+                target = module.main_lib
+                if target.built_by_cmake() and target.symbol != "UtilitiesStaticAnalyzers":
+                    subsystem_cmake.write("\n  " + target.symbol)
 
             subsystem_cmake.write("\n)\n")
 
@@ -574,7 +597,7 @@ class CMakeGenerator:
                           "-Wno-deprecated-declarations -Wno-deprecated-register -Wno-null-dereference -std=c++14\")\n")
         if cxxmodules:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} "
-                              "-fmodules -H -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
+                              "-fmodules -Xclang -fmodules-search-all -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
         if printTextualHeaders:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -H\")\n")
 
@@ -664,10 +687,10 @@ class CMakeGenerator:
 
                                 full_path = file;
                                 # We could make them private in theory... m.write("  private ")
-                                m.write("  ")
+                                m.write("  module \"" + full_path + "\" { ")
                                 if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh")):
                                     m.write("textual ")
-                                m.write("header \"" + full_path + "\"\n")
+                                m.write("header \"" + full_path + "\" export * } \n")
                     m.write("  export *\n}\n\n")
                 else: # if per header modules
                     for file in os.listdir(target.dir + "/interface/"):

@@ -8,8 +8,97 @@ module libc {
 module tbb {
     module task { header "tbb/task.h" export * }
     module concurrent_queue { header "tbb/concurrent_queue.h" export * }
+    module concurrent_vector { header "tbb/concurrent_vector.h" export * }
     module concurrent_unordered_map { header "tbb/concurrent_unordered_map.h" export * }
     module parallel_for { header "tbb/parallel_for.h" export * }
+    export *
+}
+
+module Pythia8 {
+    module "Analysis.h" { header "Pythia8/Analysis.h" export * }
+    module "Basics.h" { header "Pythia8/Basics.h" export * }
+    module "BeamParticle.h" { header "Pythia8/BeamParticle.h" export * }
+    module "BeamRemnants.h" { header "Pythia8/BeamRemnants.h" export * }
+    module "BeamShape.h" { header "Pythia8/BeamShape.h" export * }
+    module "BoseEinstein.h" { header "Pythia8/BoseEinstein.h" export * }
+    module "ColourReconnection.h" { header "Pythia8/ColourReconnection.h" export * }
+    module "ColourTracing.h" { header "Pythia8/ColourTracing.h" export * }
+    module "Event.h" { header "Pythia8/Event.h" export * }
+    module "FJcore.h" { header "Pythia8/FJcore.h" export * }
+    module "FragmentationFlavZpT.h" { header "Pythia8/FragmentationFlavZpT.h" export * }
+    module "FragmentationSystems.h" { header "Pythia8/FragmentationSystems.h" export * }
+    module "GammaKinematics.h" { header "Pythia8/GammaKinematics.h" export * }
+    module "HadronLevel.h" { header "Pythia8/HadronLevel.h" export * }
+    module "HadronScatter.h" { header "Pythia8/HadronScatter.h" export * }
+    module "HardDiffraction.h" { header "Pythia8/HardDiffraction.h" export * }
+    module "HelicityBasics.h" { header "Pythia8/HelicityBasics.h" export * }
+    module "HelicityMatrixElements.h" { header "Pythia8/HelicityMatrixElements.h" export * }
+    module "HiddenValleyFragmentation.h" { header "Pythia8/HiddenValleyFragmentation.h" export * }
+    module "History.h" { header "Pythia8/History.h" export * }
+    module "Info.h" { header "Pythia8/Info.h" export * }
+    module "JunctionSplitting.h" { header "Pythia8/JunctionSplitting.h" export * }
+    module "LesHouches.h" { header "Pythia8/LesHouches.h" export * }
+    module "LHEF3.h" { header "Pythia8/LHEF3.h" export * }
+    module "Merging.h" { header "Pythia8/Merging.h" export * }
+    module "MergingHooks.h" { header "Pythia8/MergingHooks.h" export * }
+    module "MiniStringFragmentation.h" { header "Pythia8/MiniStringFragmentation.h" export * }
+    module "MultipartonInteractions.h" { header "Pythia8/MultipartonInteractions.h" export * }
+    module "ParticleData.h" { header "Pythia8/ParticleData.h" export * }
+    module "ParticleDecays.h" { header "Pythia8/ParticleDecays.h" export * }
+    module "PartonDistributions.h" { header "Pythia8/PartonDistributions.h" export * }
+    module "PartonLevel.h" { header "Pythia8/PartonLevel.h" export * }
+    module "PartonSystems.h" { header "Pythia8/PartonSystems.h" export * }
+    module "PhaseSpace.h" { header "Pythia8/PhaseSpace.h" export * }
+    module "ProcessContainer.h" { header "Pythia8/ProcessContainer.h" export * }
+    module "ProcessLevel.h" { header "Pythia8/ProcessLevel.h" export * }
+    module "PythiaComplex.h" { header "Pythia8/PythiaComplex.h" export * }
+    module "Pythia.h" { header "Pythia8/Pythia.h" export * }
+    module "PythiaStdlib.h" { header "Pythia8/PythiaStdlib.h" export * }
+    module "ResonanceDecays.h" { header "Pythia8/ResonanceDecays.h" export * }
+    module "ResonanceWidthsDM.h" { header "Pythia8/ResonanceWidthsDM.h" export * }
+    module "ResonanceWidths.h" { header "Pythia8/ResonanceWidths.h" export * }
+    module "RHadrons.h" { header "Pythia8/RHadrons.h" export * }
+    module "Settings.h" { header "Pythia8/Settings.h" export * }
+    module "SigmaCompositeness.h" { header "Pythia8/SigmaCompositeness.h" export * }
+    module "SigmaDM.h" { header "Pythia8/SigmaDM.h" export * }
+    module "SigmaEW.h" { header "Pythia8/SigmaEW.h" export * }
+    module "SigmaExtraDim.h" { header "Pythia8/SigmaExtraDim.h" export * }
+    module "SigmaGeneric.h" { header "Pythia8/SigmaGeneric.h" export * }
+    module "SigmaHiggs.h" { header "Pythia8/SigmaHiggs.h" export * }
+    module "SigmaLeftRightSym.h" { header "Pythia8/SigmaLeftRightSym.h" export * }
+    module "SigmaLeptoquark.h" { header "Pythia8/SigmaLeptoquark.h" export * }
+    module "SigmaNewGaugeBosons.h" { header "Pythia8/SigmaNewGaugeBosons.h" export * }
+    module "SigmaOnia.h" { header "Pythia8/SigmaOnia.h" export * }
+    module "SigmaProcess.h" { header "Pythia8/SigmaProcess.h" export * }
+    module "SigmaQCD.h" { header "Pythia8/SigmaQCD.h" export * }
+    module "SigmaSUSY.h" { header "Pythia8/SigmaSUSY.h" export * }
+    module "SigmaTotal.h" { header "Pythia8/SigmaTotal.h" export * }
+    module "SLHAinterface.h" { header "Pythia8/SLHAinterface.h" export * }
+    module "SpaceShower.h" { header "Pythia8/SpaceShower.h" export * }
+    module "StandardModel.h" { header "Pythia8/StandardModel.h" export * }
+    module "Streams.h" { header "Pythia8/Streams.h" export * }
+    module "StringFragmentation.h" { header "Pythia8/StringFragmentation.h" export * }
+    module "StringLength.h" { header "Pythia8/StringLength.h" export * }
+    module "SusyCouplings.h" { header "Pythia8/SusyCouplings.h" export * }
+    module "SusyLesHouches.h" { header "Pythia8/SusyLesHouches.h" export * }
+    module "SusyResonanceWidths.h" { header "Pythia8/SusyResonanceWidths.h" export * }
+    module "SusyWidthFunctions.h" { header "Pythia8/SusyWidthFunctions.h" export * }
+    module "TauDecays.h" { header "Pythia8/TauDecays.h" export * }
+    module "TimeShower.h" { header "Pythia8/TimeShower.h" export * }
+    module "UserHooks.h" { header "Pythia8/UserHooks.h" export * }
+    module "WeakShowerMEs.h" { header "Pythia8/WeakShowerMEs.h" export * }
+}
+
+module clhep {
+    module Matrix { header "CLHEP/Matrix/Matrix.h" export * }
+    module Vector { header "CLHEP/Matrix/Vector.h" export * }
+    module SymMatrix { header "CLHEP/Matrix/SymMatrix.h" export * }
+    export *
+}
+
+module xercesc {
+    module DOMParser { header "xercesc/parsers/XercesDOMParser.hpp" export * }
+    module PlatformUtils { header "xercesc/util/PlatformUtils.hpp" export * }
     export *
 }
 
@@ -49,7 +138,8 @@ module boost {
     export *
   }
   module algorithm_string { header "/usr/include/boost/algorithm/string.hpp" export * }
-  // doesn't work yet: module lexical_cast { header "/usr/include/boost/lexical_cast.hpp" export * }
+  // doesn't work yet: 
+  module lexical_cast { header "/usr/include/boost/lexical_cast.hpp" export * }
   module static_assert { header "/usr/include/boost/static_assert.hpp" export * }
   
   module regex { header "/usr/include/boost/regex.hpp" export * }
@@ -62,17 +152,31 @@ module boost {
   module def_helper { header "boost/python/detail/def_helper.hpp" export * }
   module python_class { header "boost/python/class.hpp" export * }  
   
+  module hash_fwd { header "boost/functional/hash_fwd.hpp" export * }
+
+  module mpl_vector { header "boost/mpl/vector.hpp" export * }
+  module array { header "boost/array.hpp" export * }
   module adjacency_list {
     header "boost/graph/adjacency_list.hpp"
     export *
   }
 
-
+  /*
+  module mpl_identity { header "boost/mpl/identity.hpp" export * }
+  module move_detail_meta_utils_core { header "boost/move/detail/meta_utils_core.hpp" export * }
+  module swap { header "boost/core/swap.hpp" export * }  
+  module named_graph { header "boost/graph/named_graph.hpp" export * }
+  module set_fwd { header "boost/unordered/unordered_set_fwd.hpp" export * }
+  module unordered_detail_set { textual header "boost/unordered/detail/set.hpp" export * }
+  module shared_ptr { header "boost/smart_ptr/shared_ptr.hpp" export * }
+  module move { header "boost/move/move.hpp" export * }
+  module program_option { header "boost/program_options.hpp" export * }
+ */
 
   module transform_iterator { header "boost/iterator/transform_iterator.hpp" export * }  
   
   module hash { header "boost/functional/hash.hpp" export * }
-  
+
   module exception { header "boost/exception/exception.hpp" export * }
   
   module throw_exception { header "boost/throw_exception.hpp" export * }
@@ -84,7 +188,7 @@ module boost {
   module ref { header "boost/core/ref.hpp" export * }
   
   module unordered_set { header "boost/unordered_set.hpp" export * }
-  
+
   module mpl_eval_if { header "boost/mpl/eval_if.hpp" export * }
 
   module enable_if { header "boost/utility/enable_if.hpp" export * }
