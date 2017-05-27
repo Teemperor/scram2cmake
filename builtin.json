@@ -1,9 +1,18 @@
 {
   "CLHEP": {},
   "CSCTrackFinderEmulation": {},
-  "CoralBase": {},
-  "CoralCommon": {},
-  "CoralKernel": {},
+  "CoralBase": {
+    "includes" : ["/home/teemperor/cms/ext/coral/CoralBase"]
+  },
+  "CoralCommon": {
+    "includes" : ["/home/teemperor/cms/ext/coral/CoralCommon"]
+  },
+  "CoralKernel": {
+    "includes" : ["/home/teemperor/cms/ext/coral/CoralKernel"]
+  },
+  "RelationalAccess": {
+    "includes" : ["/home/teemperor/cms/ext/coral/RelationalAccess"]
+  },
   "Core" : {},
   "Geometry/CaloEventSetup": {},
   "HepMC": {},
@@ -14,7 +23,6 @@
   "L1Trigger/L1TMuonBarrel": {},
   "RecoLocalTracker/SiPixelClusterizer": {},
   "RecoTracker/TkNavigation": {},
-  "RelationalAccess": {},
   "TkOnlineSwDB": {},
   "boost": {
     "includes" : ["/usr/include/boost/"],
@@ -24,8 +32,8 @@
     "includes" : ["/usr/include/boost/filesystem/"],
     "depends" : ["boost"],
     "links" : ["boost_filesystem", "boost_system"]
-
   },
+  "boost_chrono": {},
   "boost_header": {},
   "boost_iostreams": {
     "includes" : ["/usr/include/boost/iostreams/"],
@@ -40,7 +48,6 @@
     "includes" : ["/usr/include/boost/python/", "/usr/include/python2.7/"],
     "depends" : ["boost"],
     "links" : ["boost_python", "dl", "python2.7"]
-
   },
   "boost_regex": {
     "includes" : ["/usr/include/boost/regex/"],
@@ -66,7 +73,9 @@
   "castor_header": {},
   "castor": {},
   "cgal": {},
-  "classlib": {},
+  "classlib": {
+    "includes" : ["/home/teemperor/cms/ext/classlib"]
+  },
   "clhep": {
     "links" : ["CLHEP"]
   },
@@ -75,17 +84,25 @@
     "links" : ["cppunit"]
   },
   "curl": {},
-  "davix": {},
+  "davix": {
+    "includes" : ["/usr/include/davix/"]
+  },
   "dcap": {},
   "dpm": {},
-  "eigen": {},
+  "eigen": {
+    "includes" : ["/usr/include/eigen3/"]
+  },
   "evtgen": {},
   "Eve": {},
   "expat": {},
   "f77compiler": {},
-  "fastjet": {},
+  "fastjet": {
+    "includes" : ["/home/teemperor/cms/fastjet"]
+  },
   "fastjet-contrib": {},
-  "fftjet": {},
+  "fftjet": {
+    "includes" : ["/home/teemperor/cms/ext/fftjet"]
+  },
   "fftw3": {},
   "gpad" : {},
   "gcc-atomic": {},
@@ -109,7 +126,9 @@
   "GX11" : {},
   "gsl": {},
   "Graf" : {},
-  "hector": {},
+  "hector": {
+    "includes" : ["/home/teemperor/cms/ext/hector/Hector"]
+  },
   "hepmc": {},
   "heppdt": {},
   "herwig": {},
@@ -132,8 +151,12 @@
     "links" : ["md5", "cfitsio"]
   },
   "Minuit2" : {},
-  "meschach": {},
-  "occi" : {},
+  "meschach": {
+    "includes" : ["/usr/include/meschach/"]
+   },
+  "occi" : {
+    "includes" : ["/home/teemperor/cms/ext/linux-oracle-client/instantclient_12_1/sdk/include"]
+  },
   "opengl": {},
   "openssl": {},
   "oracle": {},
@@ -226,7 +249,9 @@
   "tinyxml": {
     "links" : ["tinyxml"]
   },
-  "tkonlineswdb": {},
+  "tkonlineswdb": {
+    "includes" : ["/home/teemperor/cms/ext/misc/"]
+  },
   "utm": {},
   "valgrind": {},
   "vdt": {},

@@ -5,6 +5,11 @@ module libc {
     export *
 }
 
+module HepMC {
+    module "PythiaWrapper6_4" { header "HepMC/PythiaWrapper6_4.h" export *}
+    export *
+}
+
 module tbb {
     module task { header "tbb/task.h" export * }
     module concurrent_queue { header "tbb/concurrent_queue.h" export * }
@@ -89,11 +94,20 @@ module Pythia8 {
     module "WeakShowerMEs.h" { header "Pythia8/WeakShowerMEs.h" export * }
 }
 
-module clhep {
+module Geant4 {
+    module CLHEP {
+        module Units_SystemOfUnits { header "Geant4/CLHEP/Units/SystemOfUnits.h" export * }
+        export *
+    }
+    export *
+}
+
+// The system CLHEP installation that is also needed...
+module CLHEPSys {
     module Matrix { header "CLHEP/Matrix/Matrix.h" export * }
     module Vector { header "CLHEP/Matrix/Vector.h" export * }
     module SymMatrix { header "CLHEP/Matrix/SymMatrix.h" export * }
-    export *
+    module Units_SystemOfUnits { header "CLHEP/Units/SystemOfUnits.h" export * }
 }
 
 module xercesc {
@@ -126,12 +140,23 @@ module boost {
   module config { header "/usr/include/boost/config.hpp" export * }
   module filesystem {
     header "/usr/include/boost/filesystem.hpp"
-    header "/usr/include/boost/filesystem/convenience.hpp"
-    header "/usr/include/boost/filesystem/operations.hpp"
-    header "/usr/include/boost/filesystem/path.hpp"
+
     export *
   }
+  module fs_convenience { header "/usr/include/boost/filesystem/convenience.hpp" export * }
+  module fs_operations { header "/usr/include/boost/filesystem/operations.hpp" export * }
+  module fs_path { header "/usr/include/boost/filesystem/path.hpp" export * }
+
+
+
+  module spirit_classic { header "boost/spirit/include/classic.hpp" export * }
+  module spirit_classic_chset { header "boost/spirit/include/classic_chset.hpp" export * }
+  module spirit_classic_grammar_def { header "boost/spirit/include/classic_grammar_def.hpp" export * }
+  module "boost/spirit/home/classic/utility/grammar_def.hpp" { header "boost/spirit/home/classic/utility/grammar_def.hpp" export * }
+  module spirit_tuple { header "boost/spirit/home/classic/phoenix/tuples.hpp" export * }
+
   //module system_errorcode { header "/usr/include/boost/system/error_code.hpp" export * }
+
   module thread {
     header "/usr/include/boost/thread/thread.hpp"
     header "/usr/include/boost/thread/tss.hpp"

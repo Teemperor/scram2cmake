@@ -23,6 +23,76 @@ ignored_headers = [
   "GeneratorInterface/Core/interface/RNDMEngineAccess.h", # Obsolete header
   "GeneratorInterface/Pythia8Interface/interface/RandomP8.h", # Obsolete header
   "Geometry/Records/interface/GeometricDetExtraRcd.h", # Obsolete header
+  "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidate.h", # Obsolete header
+  "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidateFwd.h", #Obsolete header
+  "SimDataFormats/TrackingAnalysis/interface/TrackingDataPrint.h", # Really old code that doesn't compile anymore.
+  "CondFormats/Calibration/interface/EfficiencyPayloads.h", # Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICSimpleNavigationSchool.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICMuonPropagator.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HITrackVertexMaker.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICMeasurementEstimator.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICSeedMeasurementEstimator.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/FmpConst.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICTrajectoryBuilder.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICMuonUpdator.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICTrajectoryCorrector.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/DiMuonSeedGeneratorHIC.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/FastMuPropagator.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICConst.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICTkOuterStartingLayerFinder.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/DiMuonTrajectorySeed.h", #Obsolete header
+  "RecoHI/HiMuonAlgos/interface/HICFTSfromL1orL2.h", #Obsolete header
+  "CommonTools/Utils/src/CandForTest.h", # Doesn't have header guards....
+  "Geometry/TrackerGeometryBuilder/interface/GeomDetLess.h", #Obsolete header
+  "Geometry/TrackerGeometryBuilder/interface/GluedGeomDet.h", #Obsolete header
+  "CondFormats/GeometryObjects/interface/GeometryFile.h", #Obsolete header
+  "TrackingTools/MeasurementDet/interface/GeometricSearchDetMeasurements.h", #Obsolete header
+  "TrackingTools/TrajectoryFiltering/interface/BaseCkfTrajectoryFilter.h", #Obsolete header
+  "FastSimulation/Utilities/interface/RandomEngine.h", #Obsolete header
+  "RecoMuon/MuonIsolation/interface/MuIsoExtractor.h", #Obsolete header
+  "RecoMuon/MuonIsolation/interface/MuIsoExtractorFactory.h", #Obsolete header
+  "RecoPixelVertexing/PixelTriplets/interface/CombinedHitTripletGenerator.h", #Obsolete header
+  "CondFormats/DTObjects/interface/DTCompactMapAbstractHandler.h", #Obsolete header
+  "CondFormats/DTObjects/interface/DTConfigAbstractHandler.h", #Obsolete header
+
+  "PhysicsTools/HepMCCandAlgos/interface/MCTruthCompositeMatcher.h", # Includes nonexistend file
+  "L1Trigger/CSCTrackFinder/interface/CSCTFSPCoreLogic.h", #Includes missing generated code
+  "L1Trigger/CSCTrackFinder/interface/CSCTFSectorProcessor.h", #Includes header above
+  "RecoVertex/MultiVertexFit/interface/LinPtFinderFromAdaptiveFitter.h", #Includes nonexistent file
+  "/home/teemperor/cms/cmssw/CommonTools/RecoAlgos/interface/PixelMatchGsfElectronSelector.h", # Obsolete file
+  "CommonTools/UtilAlgos/interface/ObjectCounter.h", #Includes nonexistent file
+  "PhysicsTools/CandUtils/interface/CandMatcher.h", #Not even valid core anymore, has std;:vector instead of::...
+  "CommonTools/RecoAlgos/interface/PixelMatchGsfElectronSelector.h", #Includes nonexistent file
+  "TrackingTools/GsfTools/interface/RCMultiGaussianState.h", #Obsolete code
+  "CommonTools/RecoAlgos/interface/PhotonSelector.h", #Does funny things with unique_ptr copying around..
+  "PhysicsTools/IsolationUtils/interface/TauConeIsolationAlgo.h", #Includes nonexistent header
+
+  "DQM/SiStripCommissioningDbClients/interface/SamplingHistosUsingDb.h", #Does inheritance wrong
+
+  "CommonTools/CandAlgos/interface/CloneProducer.h", #Invalid code, funny unique_ptr copying going on...
+  "RecoEcal/EgammaClusterAlgos/interface/LogPositionCalc.h", #Uses EcalRecHitData which does no longer exist
+  "TrackingTools/GsfTools/src/GaussianStateLessWeight.h", # Redefines class
+  "CommonReco/GSFTools/interface/KeepingNonZeroWeightsMerger.h", #Uses template class without template args
+  "TrackingTools/GsfTools/interface/LargestWeightsStateMerger.h", #Same as above
+  "TrackingTools/GsfTools/interface/MahalanobisDistance.h", #Same as above
+
+  "TrackingTools/GsfTools/interface/MultiTrajectoryStateCombiner.h", #Invalid and obsolete header...
+
+  "PhysicsTools/IsolationUtils/interface/CalIsolationAlgoNoExp.h", # Includes nonexistent stuff
+  "PhysicsTools/IsolationAlgos/interface/CalIsolationNoExtrapol.h", #includes above header
+
+  "DetectorDescription/Core/interface/graph_path.h", # Broken code?
+  "RecoTracker/Record/interface/Records.h", # Seems to be broken...
+  "CommonTools/UtilAlgos/interface/ChargeSelector.h", # I don't even know. Seems really broken...
+  "MagneticField/VolumeGeometry/interface/PlanarVolumeBoundary.h", #REferences unknown classes...
+  "PhysicsTools/SelectorUtils/interface/Expressions.h", # Really broken meta-programming going on here...
+  "RecoVertex/LinearizationPointFinders/interface/GenericLinearizationPointFinder.h", # Uses template class as a non-template class...
+  "CondCore/PopCon/interface/VerifyState.h", # Includes nonexistent TagInfo.h
+  "TrackPropagation/RungeKutta/src/RK4PreciseSolver.h", # Includes nonexistent things
+  "Alignment/LaserAlignment/interface/LaserHitPairGenerator.h", # Copy constructor doesn't work here
+  "Alignment/LaserAlignment/interface/SeedGeneratorForLaserBeams.h", #Uses the header above and isn't used anywhere...
+  "MagneticField/VolumeGeometry/interface/MagneticFieldVolume.h", #Also doesn't compile. PositionType isn't define...
+  "CondFormats/Calibration/interface/bitObj.h", # Broken. I don't even know...
 ]
 textual_headers = [
   "FWCore/Utilities/src/Guid.h",
@@ -30,6 +100,13 @@ textual_headers = [
   "FWCore/Framework/src/ProductResolvers.h",
   "FWCore/Framework/src/UnscheduledAuxiliary.h",
   "DataFormats/GeometryVector/interface/Basic3DVectorLD.h", # Different Basic3DVector templates that it depends on here...
+  "CondFormats/Serialization/src/SerializationManual.h", #Repeatedly included
+  "CondFormats/ESObjects/src/SerializationManual.h", #Repeatedly included
+  "CondFormats/PhysicsToolsObjects/src/SerializationManual.h", #Repeatedly included
+  "CondFormats/SiPixelObjects/interface/SerializationManual.h", #Repeatedly included
+  "CondFormats/SiPixelObjects/src/SerializationManual.h", #Repeatedly included
+  "CondFormats/Calibration/src/SerializationManual.h", #Repeatedly included
+  "CondFormats/EcalObjects/src/SerializationManual.h", #Repeatedly included
 ]
 
 # Handle command line arguments
@@ -597,7 +674,7 @@ class CMakeGenerator:
                           "-Wno-deprecated-declarations -Wno-deprecated-register -Wno-null-dereference -std=c++14\")\n")
         if cxxmodules:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} "
-                              "-fmodules -Xclang -fmodules-search-all -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
+                              "-fmodules  -Wno-module-import-in-extern-c -Xclang -fmodules-search-all -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
         if printTextualHeaders:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -H\")\n")
 
@@ -641,12 +718,26 @@ class CMakeGenerator:
                 break
         
         result |= set(glob.glob(path + "**/*.hh", recursive=True))
+        result |= set(glob.glob(path + "**/*.hpp", recursive=True))
         result |= set(glob.glob(path + "**/*.icc", recursive=True))
         result |= set(glob.glob(path + "**/*.inc", recursive=True))
         result = list(result)
         result.sort()
         
         return result
+
+    def is_obsolete(self, path):
+        try:
+            content = open(path).read()
+            if '#error' in content and not "#if" in content:
+                print("Obsolete header ignored: " + path)
+                return True
+        except UnicodeDecodeError:
+            print("Failed to read header: " + path)
+            return False
+        return False
+
+    
 
     def gen_module_map(self):
         m = open("module.modulemap", "w")
@@ -661,8 +752,11 @@ class CMakeGenerator:
                     for file in self.get_headers(dir_path):
                         if file in ignored_headers:
                             continue
+                        if self.is_obsolete(file):
+                            continue
                         if (file.endswith(".h") or
                             file.endswith(".hh") or
+                            file.endswith(".hpp") or
                             file.endswith(".icc") or
                             file.endswith(".inc")):
 
@@ -670,7 +764,7 @@ class CMakeGenerator:
                             module_name = full_path[len(dir_path):]
                             
                             m.write("  module \"" + module_name + "\" { ");
-                            if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh")):
+                            if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh") or file.endswith(".hpp")):
                                 m.write("textual ")
                             m.write("header \"" + full_path + "\" export * }\n")
                     dir_path = target.dir + "/src/"
@@ -680,15 +774,18 @@ class CMakeGenerator:
                         for file in internal_headers:
                             if file in ignored_headers:
                                 continue
+                            if self.is_obsolete(file):
+                                continue
                             if (file.endswith(".h") or
                                 file.endswith(".hh") or
+                                file.endswith(".hpp") or
                                 file.endswith(".icc") or
                                 file.endswith(".inc")):
 
                                 full_path = file;
                                 # We could make them private in theory... m.write("  private ")
                                 m.write("  module \"" + full_path + "\" { ")
-                                if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh")):
+                                if full_path in textual_headers or not (file.endswith(".h") or file.endswith(".hh") or file.endswith(".hpp")):
                                     m.write("textual ")
                                 m.write("header \"" + full_path + "\" export * } \n")
                     m.write("  export *\n}\n\n")
