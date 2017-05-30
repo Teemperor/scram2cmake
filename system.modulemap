@@ -1,7 +1,42 @@
 
 module libc {
-    module "stdio.h" { header "stdio.h" export * }
-    module "stdint.h" { header "stdint.h" export * }
+    module stdio { header "stdio.h" export * }
+    module stdlib { header "stdlib.h" export * }
+    module string { header "string.h" export * }
+    module stdint { header "stdint.h" export * }
+    module errno { header "errno.h" export * }
+    module alloca { header "alloca.h" export * }
+    module malloc { header "malloc.h" export * }
+    module xlocale { header "xlocale.h" export * }
+    module signal { header "signal.h" export * }
+    module unistd { header "unistd.h" export * }
+    module dlfcn { header "dlfcn.h" export * }
+    module math { header "math.h" export * }
+    module libio { header "libio.h" export * }
+    module wchar { header "wchar.h" export * }
+    module pthread { header "pthread.h" export * }
+    module endian { header "endian.h" export * }
+    module sched { header "sched.h" export * }
+    module time { header "time.h" export * }
+    module netdb { header "netdb.h" export * }
+    module features { header "features.h" export * }
+    module bits {
+        module types { header "bits/types.h" export * }
+        module wchar { header "bits/wchar.h" export * }
+    }
+    module sys {
+        module select { header "sys/select.h" export * }
+        module types { header "sys/types.h" export * }
+        module wait { header "sys/wait.h" export * }
+        module time { header "sys/time.h" export * }
+        module ipc { header "sys/ipc.h" export * }
+        module msg { header "sys/msg.h" export * }
+        module signal { header "sys/signal.h" export * }
+        module socket { header "sys/socket.h" export * }
+        module stat { header "sys/stat.h" export * }
+        module fcntl { header "sys/fcntl.h" export * }
+        module resource { header "sys/resource.h" export * }
+    }
     export *
 }
 
@@ -113,6 +148,7 @@ module CLHEPSys {
 module xercesc {
     module DOMParser { header "xercesc/parsers/XercesDOMParser.hpp" export * }
     module PlatformUtils { header "xercesc/util/PlatformUtils.hpp" export * }
+    module DOM { header "xercesc/dom/DOM.hpp" export * }
     export *
 }
 
@@ -126,9 +162,7 @@ module linux {
 
 }
 
-module sys {
-    module types { header "sys/types.h" export * }
-}
+module zlib { header "zlib.h" export * }
 
 module tiny_xml {
     header "tinyxml.h"
@@ -136,18 +170,40 @@ module tiny_xml {
 }
 
 module boost {
-  module version { header "/usr/include/boost/version.hpp" export * }
-  module config { header "/usr/include/boost/config.hpp" export * }
+  module version { header "boost/version.hpp" export * }
+  module config { header "boost/config.hpp" export * }
   module filesystem {
-    header "/usr/include/boost/filesystem.hpp"
+    header "boost/filesystem.hpp"
 
     export *
   }
-  module fs_convenience { header "/usr/include/boost/filesystem/convenience.hpp" export * }
-  module fs_operations { header "/usr/include/boost/filesystem/operations.hpp" export * }
-  module fs_path { header "/usr/include/boost/filesystem/path.hpp" export * }
+  module bind { header "boost/bind.hpp" export * }
+  module fs_convenience { header "boost/filesystem/convenience.hpp" export * }
+  module fs_operations { header "boost/filesystem/operations.hpp" export * }
+  module fs_path { header "boost/filesystem/path.hpp" export * }
 
 
+  module "boost/any.hpp" { header "boost/any.hpp" export * }
+  module "boost/assign/std/vector.hpp" { header "boost/assign/std/vector.hpp" export * }
+  module "boost/call_traits.hpp" { header "boost/call_traits.hpp" export * }
+  module "boost/concept_check.hpp" { header "boost/concept_check.hpp" export * }
+  module "boost/cstdint.hpp" { header "boost/cstdint.hpp" export * }
+  module "boost/functional.hpp" { header "boost/functional.hpp" export * }
+  module "boost/iterator/counting_iterator.hpp" { header "boost/iterator/counting_iterator.hpp" export * }
+  module "boost/iterator/indirect_iterator.hpp" { header "boost/iterator/indirect_iterator.hpp" export * }
+  module "boost/iterator/iterator_facade.hpp" { header "boost/iterator/iterator_facade.hpp" export * }
+  module "boost/iterator/permutation_iterator.hpp" { header "boost/iterator/permutation_iterator.hpp" export * }
+  module "boost/iterator/transform_iterator.hpp" { header "boost/iterator/transform_iterator.hpp" export * }
+  module "boost/lambda/bind.hpp" { header "boost/lambda/bind.hpp" export * }
+  module "boost/lambda/lambda.hpp" { header "boost/lambda/lambda.hpp" export * }
+  module "boost/mpl/assert.hpp" { header "boost/mpl/assert.hpp" export * }
+  module "boost/mpl/has_xxx.hpp" { header "boost/mpl/has_xxx.hpp" export * }
+  module "boost/mpl/if.hpp" { header "boost/mpl/if.hpp" export * }
+  module "boost/range.hpp" { header "boost/range.hpp" export * }
+  module "boost/range/iterator_range.hpp" { header "boost/range/iterator_range.hpp" export * }
+  module "boost/type_traits.hpp" { header "boost/type_traits.hpp" export * }
+  module "boost/utility/enable_if.hpp" { header "boost/utility/enable_if.hpp" export * }
+  module "boost/utility.hpp" { header "boost/utility.hpp" export * }
 
   module spirit_classic { header "boost/spirit/include/classic.hpp" export * }
   module spirit_classic_chset { header "boost/spirit/include/classic_chset.hpp" export * }
@@ -155,28 +211,27 @@ module boost {
   module "boost/spirit/home/classic/utility/grammar_def.hpp" { header "boost/spirit/home/classic/utility/grammar_def.hpp" export * }
   module spirit_tuple { header "boost/spirit/home/classic/phoenix/tuples.hpp" export * }
 
-  //module system_errorcode { header "/usr/include/boost/system/error_code.hpp" export * }
+  //module system_errorcode { header "boost/system/error_code.hpp" export * }
 
   module thread {
-    header "/usr/include/boost/thread/thread.hpp"
-    header "/usr/include/boost/thread/tss.hpp"
+    header "boost/thread/thread.hpp"
+    header "boost/thread/tss.hpp"
     export *
   }
-  module algorithm_string { header "/usr/include/boost/algorithm/string.hpp" export * }
+  module algorithm_string { header "boost/algorithm/string.hpp" export * }
   // doesn't work yet: 
-  module lexical_cast { header "/usr/include/boost/lexical_cast.hpp" export * }
-  module static_assert { header "/usr/include/boost/static_assert.hpp" export * }
+  module lexical_cast { header "boost/lexical_cast.hpp" export * }
+  module static_assert { header "boost/static_assert.hpp" export * }
   
-  module regex { header "/usr/include/boost/regex.hpp" export * }
-  module tokenizer { header "/usr/include/boost/tokenizer.hpp" export * }
-
-  module indirect_iterator { header "boost/iterator/indirect_iterator.hpp" export * }
-  module counting_iterator { header "boost/iterator/counting_iterator.hpp" export * }
+  module regex { header "boost/regex.hpp" export * }
+  module tokenizer { header "boost/tokenizer.hpp" export * }
 
   module python { header "boost/python.hpp" export * }
   module def_helper { header "boost/python/detail/def_helper.hpp" export * }
   module python_class { header "boost/python/class.hpp" export * }  
   
+  module string_replace { header "boost/algorithm/string/replace.hpp" export * }
+
   module hash_fwd { header "boost/functional/hash_fwd.hpp" export * }
 
   module mpl_vector { header "boost/mpl/vector.hpp" export * }
@@ -185,6 +240,11 @@ module boost {
     header "boost/graph/adjacency_list.hpp"
     export *
   }
+
+  module lambda { header "boost/lambda/lambda.hpp" export * }
+  module graph_traits { header "boost/graph/graph_traits.hpp" export * }
+  module graph_depth_first_search { header "boost/graph/depth_first_search.hpp" export * }
+  module range_adaptor_reversed { header "boost/range/adaptor/reversed.hpp" export * }
 
   /*
   module mpl_identity { header "boost/mpl/identity.hpp" export * }
@@ -197,8 +257,6 @@ module boost {
   module move { header "boost/move/move.hpp" export * }
   module program_option { header "boost/program_options.hpp" export * }
  */
-
-  module transform_iterator { header "boost/iterator/transform_iterator.hpp" export * }  
   
   module hash { header "boost/functional/hash.hpp" export * }
 
@@ -208,15 +266,13 @@ module boost {
   
   module tuple { header "boost/tuple/tuple.hpp" export * }
   
-  module addressof { header "/usr/include/boost/utility/addressof.hpp" export * }
+  module addressof { header "boost/utility/addressof.hpp" export * }
   
   module ref { header "boost/core/ref.hpp" export * }
   
   module unordered_set { header "boost/unordered_set.hpp" export * }
 
   module mpl_eval_if { header "boost/mpl/eval_if.hpp" export * }
-
-  module enable_if { header "boost/utility/enable_if.hpp" export * }
   
   module mpl_placeholders { header "boost/mpl/placeholders.hpp" export * }
   

@@ -55,19 +55,34 @@ ignored_headers = [
   "CondFormats/DTObjects/interface/DTCompactMapAbstractHandler.h", #Obsolete header
   "CondFormats/DTObjects/interface/DTConfigAbstractHandler.h", #Obsolete header
 
+  "RecoVertex/KinematicFitPrimitives/interface/KinematicVertexDistance.h", #Includes nonexistent file
+  "PhysicsTools/UtilAlgos/interface/StoreManagerTrait.h", #Redefines ObjectSelectorBase, CommonTools/UtilAlgos/interface/StoreManagerTrait.h
+  "PhysicsTools/UtilAlgos/interface/BasicFilter.h", #Uses the "vitrual" keyword, that has yet 'to be understood'...
+  "PhysicsTools/UtilAlgos/interface/AdHocNTupler.h", #Includes nonexistent file
   "PhysicsTools/HepMCCandAlgos/interface/MCTruthCompositeMatcher.h", # Includes nonexistend file
   "L1Trigger/CSCTrackFinder/interface/CSCTFSPCoreLogic.h", #Includes missing generated code
   "L1Trigger/CSCTrackFinder/interface/CSCTFSectorProcessor.h", #Includes header above
   "RecoVertex/MultiVertexFit/interface/LinPtFinderFromAdaptiveFitter.h", #Includes nonexistent file
-  "/home/teemperor/cms/cmssw/CommonTools/RecoAlgos/interface/PixelMatchGsfElectronSelector.h", # Obsolete file
+  "CommonTools/RecoAlgos/interface/PixelMatchGsfElectronSelector.h", # Obsolete file
   "CommonTools/UtilAlgos/interface/ObjectCounter.h", #Includes nonexistent file
   "PhysicsTools/CandUtils/interface/CandMatcher.h", #Not even valid core anymore, has std;:vector instead of::...
   "CommonTools/RecoAlgos/interface/PixelMatchGsfElectronSelector.h", #Includes nonexistent file
   "TrackingTools/GsfTools/interface/RCMultiGaussianState.h", #Obsolete code
   "CommonTools/RecoAlgos/interface/PhotonSelector.h", #Does funny things with unique_ptr copying around..
   "PhysicsTools/IsolationUtils/interface/TauConeIsolationAlgo.h", #Includes nonexistent header
+  "CommonTools/CandAlgos/interface/NamedCandCombiner.h", #Includes nonexistent header
+  "TrackingTools/GsfTools/interface/KeepingNonZeroWeightsMerger.h", #Includes nonexistent file
+  "Mixing/Base/interface/PoissonPUGenerator.h", # calls non-static member function  without object CLHEP::RandPoissonQ
+  "RecoVertex/KinematicFitPrimitives/interface/KinematicVertexAssociator.h", #includes nonexistent header
 
+  "CaloOnlineTools/HcalOnlineDb/interface/LMap.h", #Includes boost/boost::shared_ptr ...
+
+  "RecoEcal/EgammaClusterProducers/interface/PiZeroDiscriminatorProducer.h", # Redefines a symbol
   "DQM/SiStripCommissioningDbClients/interface/SamplingHistosUsingDb.h", #Does inheritance wrong
+
+  "SimTracker/TrackHistory/interface/TrackClassifierByProxy.h", #Uses nonexistent TrackClassifier constructor
+
+  "TrackingTools/GsfTracking/src/DebugHelpers.h", #Broken code?
 
   "CommonTools/CandAlgos/interface/CloneProducer.h", #Invalid code, funny unique_ptr copying going on...
   "RecoEcal/EgammaClusterAlgos/interface/LogPositionCalc.h", #Uses EcalRecHitData which does no longer exist
@@ -75,7 +90,6 @@ ignored_headers = [
   "CommonReco/GSFTools/interface/KeepingNonZeroWeightsMerger.h", #Uses template class without template args
   "TrackingTools/GsfTools/interface/LargestWeightsStateMerger.h", #Same as above
   "TrackingTools/GsfTools/interface/MahalanobisDistance.h", #Same as above
-
   "TrackingTools/GsfTools/interface/MultiTrajectoryStateCombiner.h", #Invalid and obsolete header...
 
   "PhysicsTools/IsolationUtils/interface/CalIsolationAlgoNoExp.h", # Includes nonexistent stuff
@@ -674,7 +688,7 @@ class CMakeGenerator:
                           "-Wno-deprecated-declarations -Wno-deprecated-register -Wno-null-dereference -std=c++14\")\n")
         if cxxmodules:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} "
-                              "-fmodules  -Wno-module-import-in-extern-c -Xclang -fmodules-search-all -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
+                              "-fmodules  -Wno-module-import-in-extern-c -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
         if printTextualHeaders:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -H\")\n")
 
@@ -747,7 +761,7 @@ class CMakeGenerator:
             dir_path = target.dir + "/interface/";
             if os.path.isdir(dir_path):
                 if not perHeaderModules:
-                    m.write("module " + target.symbol + " {\n")
+                    m.write("module CMS_" + target.symbol + " {\n")
                     
                     for file in self.get_headers(dir_path):
                         if file in ignored_headers:

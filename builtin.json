@@ -97,11 +97,11 @@
   "expat": {},
   "f77compiler": {},
   "fastjet": {
-    "includes" : ["/home/teemperor/cms/fastjet"]
+    "includes" : ["/home/teemperor/cms/ext/fastjet/include"]
   },
   "fastjet-contrib": {},
   "fftjet": {
-    "includes" : ["/home/teemperor/cms/ext/fftjet"]
+    "includes" : ["/home/teemperor/cms/ext/fftjet", "/home/teemperor/cms/ext/fftjet"]
   },
   "fftw3": {},
   "gpad" : {},
