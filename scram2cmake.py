@@ -15,16 +15,17 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 cxxmodules = False
 perHeaderModules = False
 printTextualHeaders = False
+noLink = False
 
 ignored_headers = [
   # CMS things
   "DataFormats/Common/interface/AssociativeIterator.h",
   "DataFormats/Math/interface/AVXVec.h", # Can't be used alone, needs Vec4 definition.
-  "GeneratorInterface/Core/interface/RNDMEngineAccess.h", # Obsolete header
+  "GeneratorInterface/Core/interface/RNDMEngineAccess.h", # Obsolete header DONE
   "GeneratorInterface/Pythia8Interface/interface/RandomP8.h", # Obsolete header
   "Geometry/Records/interface/GeometricDetExtraRcd.h", # Obsolete header
-  "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidate.h", # Obsolete header
-  "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidateFwd.h", #Obsolete header
+  "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidate.h", # Obsolete header DONE
+  "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidateFwd.h", #Obsolete header DONE
   "SimDataFormats/TrackingAnalysis/interface/TrackingDataPrint.h", # Really old code that doesn't compile anymore.
   "CondFormats/Calibration/interface/EfficiencyPayloads.h", # Obsolete header
   "RecoHI/HiMuonAlgos/interface/HICSimpleNavigationSchool.h", #Obsolete header
@@ -55,9 +56,10 @@ ignored_headers = [
   "CondFormats/DTObjects/interface/DTCompactMapAbstractHandler.h", #Obsolete header
   "CondFormats/DTObjects/interface/DTConfigAbstractHandler.h", #Obsolete header
 
+  "DataFormats/GeometrySurface/interface/SimpleConeBounds.h", #Calls tmp.inside(p) but that usually takes also a LocalError parameter
   "RecoVertex/KinematicFitPrimitives/interface/KinematicVertexDistance.h", #Includes nonexistent file
   "PhysicsTools/UtilAlgos/interface/StoreManagerTrait.h", #Redefines ObjectSelectorBase, CommonTools/UtilAlgos/interface/StoreManagerTrait.h
-  "PhysicsTools/UtilAlgos/interface/BasicFilter.h", #Uses the "vitrual" keyword, that has yet 'to be understood'...
+  "PhysicsTools/UtilAlgos/interface/BasicFilter.h", #Uses the "vitrual" keyword, that has yet 'to be understood'..., DONE
   "PhysicsTools/UtilAlgos/interface/AdHocNTupler.h", #Includes nonexistent file
   "PhysicsTools/HepMCCandAlgos/interface/MCTruthCompositeMatcher.h", # Includes nonexistend file
   "L1Trigger/CSCTrackFinder/interface/CSCTFSPCoreLogic.h", #Includes missing generated code
@@ -65,7 +67,7 @@ ignored_headers = [
   "RecoVertex/MultiVertexFit/interface/LinPtFinderFromAdaptiveFitter.h", #Includes nonexistent file
   "CommonTools/RecoAlgos/interface/PixelMatchGsfElectronSelector.h", # Obsolete file
   "CommonTools/UtilAlgos/interface/ObjectCounter.h", #Includes nonexistent file
-  "PhysicsTools/CandUtils/interface/CandMatcher.h", #Not even valid core anymore, has std;:vector instead of::...
+  "PhysicsTools/CandUtils/interface/CandMatcher.h", #Not even valid core anymore, has std;:vector instead of::... DONE
   "CommonTools/RecoAlgos/interface/PixelMatchGsfElectronSelector.h", #Includes nonexistent file
   "TrackingTools/GsfTools/interface/RCMultiGaussianState.h", #Obsolete code
   "CommonTools/RecoAlgos/interface/PhotonSelector.h", #Does funny things with unique_ptr copying around..
@@ -74,6 +76,13 @@ ignored_headers = [
   "TrackingTools/GsfTools/interface/KeepingNonZeroWeightsMerger.h", #Includes nonexistent file
   "Mixing/Base/interface/PoissonPUGenerator.h", # calls non-static member function  without object CLHEP::RandPoissonQ
   "RecoVertex/KinematicFitPrimitives/interface/KinematicVertexAssociator.h", #includes nonexistent header
+
+  "CommonTools/Utils/src/CutBinaryOperatorSetter.h", #includes below header
+  "CommonTools/Utils/src/CutBinaryOperator.h", #includes nonexistend CutBase.h
+
+  "TrackingTools/TrackFitters/interface/DebugHelpers.h", # textual header
+
+  "DataFormats/FEDRawData/interface/DaqData.h", # Completely broken
 
   "CaloOnlineTools/HcalOnlineDb/interface/LMap.h", #Includes boost/boost::shared_ptr ...
 
@@ -84,13 +93,16 @@ ignored_headers = [
 
   "TrackingTools/GsfTracking/src/DebugHelpers.h", #Broken code?
 
+  "DataFormats/GeometryCommonDetAlgo/interface/DeepCopyPointer.h", # Cycle DataFormats/GeometryCommonDetAlgo - DataFormats/GeometrySurface
+  "DataFormats/GeometryCommonDetAlgo/interface/ErrorMatrixTag.h", # Cycle DataFormats/GeometryCommonDetAlgo - DataFormats/GeometrySurface
+
   "CommonTools/CandAlgos/interface/CloneProducer.h", #Invalid code, funny unique_ptr copying going on...
   "RecoEcal/EgammaClusterAlgos/interface/LogPositionCalc.h", #Uses EcalRecHitData which does no longer exist
   "TrackingTools/GsfTools/src/GaussianStateLessWeight.h", # Redefines class
   "CommonReco/GSFTools/interface/KeepingNonZeroWeightsMerger.h", #Uses template class without template args
   "TrackingTools/GsfTools/interface/LargestWeightsStateMerger.h", #Same as above
   "TrackingTools/GsfTools/interface/MahalanobisDistance.h", #Same as above
-  "TrackingTools/GsfTools/interface/MultiTrajectoryStateCombiner.h", #Invalid and obsolete header...
+  "TrackingTools/GsfTools/interface/MultiTrajectoryStateCombiner.h", #Invalid and obsolete header... DONE
 
   "PhysicsTools/IsolationUtils/interface/CalIsolationAlgoNoExp.h", # Includes nonexistent stuff
   "PhysicsTools/IsolationAlgos/interface/CalIsolationNoExtrapol.h", #includes above header
@@ -106,7 +118,7 @@ ignored_headers = [
   "Alignment/LaserAlignment/interface/LaserHitPairGenerator.h", # Copy constructor doesn't work here
   "Alignment/LaserAlignment/interface/SeedGeneratorForLaserBeams.h", #Uses the header above and isn't used anywhere...
   "MagneticField/VolumeGeometry/interface/MagneticFieldVolume.h", #Also doesn't compile. PositionType isn't define...
-  "CondFormats/Calibration/interface/bitObj.h", # Broken. I don't even know...
+  "CondFormats/Calibration/interface/bitObj.h", # Broken. I don't even know... DONE
 ]
 textual_headers = [
   "FWCore/Utilities/src/Guid.h",
@@ -132,6 +144,8 @@ for arg in sys.argv[1:]:
         cxxmodules = True
     elif arg == "-H":
         printTextualHeaders = True
+    elif arg == "--nolink":
+        noLink = True
     else:
         print("Unknown arg: " + arg)
         exit(1)
@@ -547,11 +561,13 @@ class CMakeGenerator:
             out.write(target.root_dict.cmake_command())
             out.write("\n")
 
-        if target.is_executable:
+        if target.is_executable and not noLink:
             out.write("add_executable(")
         else:
             out.write("add_library(")
         out.write(target.symbol)
+        if noLink:
+            out.write(" OBJECT ")
 
         for source in target.source_files:
             out.write("\n  " + source)
@@ -572,12 +588,12 @@ class CMakeGenerator:
             out.write("\n")
             out.write("PROPERTIES COMPILE_FLAGS \"" + target.cxx_flags + "\")\n")
 
-        if len(target.ld_flags.strip()) != 0:
+        if not noLink and len(target.ld_flags.strip()) != 0:
             out.write("# Manually defined LD_FLAGS\n")
             out.write("target_link_libraries(" + target.symbol + 
                       " " + target.ld_flags + ")\n")
 
-        if len(target.needed_libs) != 0:
+        if not noLink and len(target.needed_libs) != 0:
             out.write("target_link_libraries(" + target.symbol + "\n")
             for lib in target.needed_libs:
                 out.write("  " + lib + "\n")
@@ -688,7 +704,7 @@ class CMakeGenerator:
                           "-Wno-deprecated-declarations -Wno-deprecated-register -Wno-null-dereference -std=c++14\")\n")
         if cxxmodules:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} "
-                              "-fmodules  -Wno-module-import-in-extern-c -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
+                              "-fmodules -Wno-module-import-in-extern-c -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
         if printTextualHeaders:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -H\")\n")
 
@@ -766,6 +782,8 @@ class CMakeGenerator:
                     for file in self.get_headers(dir_path):
                         if file in ignored_headers:
                             continue
+                        if file.endswith("headers.h"):
+                            continue
                         if self.is_obsolete(file):
                             continue
                         if (file.endswith(".h") or
@@ -783,7 +801,7 @@ class CMakeGenerator:
                             m.write("header \"" + full_path + "\" export * }\n")
                     dir_path = target.dir + "/src/"
                     internal_headers = self.get_headers(dir_path)
-                    if len(internal_headers) != 0:
+                    if len(internal_headers) != 0 and False:
                         m.write ("  // internal headers\n")
                         for file in internal_headers:
                             if file in ignored_headers:
@@ -832,7 +850,7 @@ class CMakeGenerator:
       }
     ]
   },
-  { 'name': '/usr/include/c++/6.3.1/', 'type': 'directory',
+  { 'name': '/usr/include/c++/7.2.0/', 'type': 'directory',
     'contents': [
       { 'name' : 'module.modulemap', 'type': 'file',
         'external-contents': '""" + prefix + """stl.modulemap'
