@@ -44,6 +44,10 @@ module "stl" {
     export *
     header "chrono"
   }
+  //module "stdlib.h" {
+  //  export *
+  //  header "stdlib.h"
+  //}
   module "cinttypes" {
     export *
     header "cinttypes"
@@ -110,7 +114,7 @@ module "stl" {
   }
   // builtin modules seem to include this
   // and this in turn includes builtin module.
-  // So let's get this from the modulemap
+  // So let's get this from the modulemap.
   //module "cstdlib" {
   //  export *
   //  header "cstdlib"
