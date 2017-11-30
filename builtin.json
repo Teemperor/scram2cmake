@@ -92,7 +92,9 @@
   "eigen": {
     "includes" : ["/usr/include/eigen3/"]
   },
-  "evtgen": {},
+  "evtgen": {
+    "includes" : ["/home/teemperor/cms/ext/EvtGen/EvtGen"]
+  },
   "Eve": {},
   "expat": {},
   "f77compiler": {},
@@ -176,7 +178,9 @@
     "includes" : ["/usr/include/Pythia8/"]
   },
   "RGL" : {},
-  "rivet": {},
+  "rivet": {
+    "includes" : ["/home/teemperor/cms/ext/Rivet/include"]
+  },
   "root": {
     "includes" : ["/usr/include/root/", "/home/teemperor/CERN/root-build/include"],
     "links" : [
@@ -239,12 +243,17 @@
     "includes" : ["/usr/include/sigc++-2.0/", "/usr/lib/sigc++-2.0/include/"]
   },
   "sockets": {},
-  "tauola": {},
+  "tauola": {
+    "includes" : ["/home/teemperor/cms/ext/TAUOLA/include"]
+  },
   "tauolapp": {},
   "tbb": {
     "links" : ["tbb"]
   },
   "tcmalloc_minimal": {},
+  "thepeg" : {
+    "includes" : ["/home/teemperor/cms/ext/ThePEG"]
+  },
   "thread": {},
   "tinyxml": {
     "links" : ["tinyxml"]
@@ -264,7 +273,9 @@
   "XrdPosixPreload" : {},
   "xrootd": {},
   "xz": {},
-  "yoda": {},
+  "yoda": {
+    "includes" : ["/home/teemperor/cms/ext/YODA/include"]
+  },
   "zlib": {
     "links" : ["z", "cfitsio"]
   }

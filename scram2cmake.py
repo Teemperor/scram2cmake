@@ -17,6 +17,8 @@ perHeaderModules = False
 printTextualHeaders = False
 noLink = False
 
+allPCMTargets = []
+
 ignored_headers = [
   # CMS things
   "DataFormats/Common/interface/AssociativeIterator.h",
@@ -56,6 +58,38 @@ ignored_headers = [
   "CondFormats/DTObjects/interface/DTCompactMapAbstractHandler.h", #Obsolete header
   "CondFormats/DTObjects/interface/DTConfigAbstractHandler.h", #Obsolete header
 
+  "L1TriggerConfig/GMTConfigProducers/interface/GTRecordGroup.h", #Does funny template stuff
+
+  "L1Trigger/RegionalCaloTrigger/interface/L1GctRegion.h", # Is doing funny C++ things
+
+  "CondTools/SiPixel/interface/PixelPopConDCSSourceHandler.h", #References nonexistent file
+
+  "CommonTools/ParticleFlow/interface/TopProjectors.h", # Is doing strange template things.
+
+  "CondCore/DTPlugins/interface/DTConfigPluginHandler.h", #Obsolete header
+
+  "PhysicsTools/UtilAlgos/interface/AdHocNTupler.h", #includes nonexistent file
+
+  "CondCore/DTPlugins/interface/DTCompactMapPluginHandler.h", #Obsolete header
+
+  "CommonTools/CandAlgos/interface/CandDecaySelector.h", # Specializes StoreManagerTrait in CommonTools/CandAlgos/interface/CandDecaySelector.h:47
+#In module 'CMS_CommonToolsUtilAlgos' imported from /home/teemperor/cms/cmssw/CommonTools/CandAlgos/interface/CandCombiner.h:23:
+#/home/teemperor/cms/cmssw/CommonTools/UtilAlgos/interface/ObjectSelector.h:35:46: error: missing '#include "CommonTools/CandAlgos/interface/CandDecaySelector.h"'; #definition of
+#      'StoreManagerTrait<reco::CandidateCollection, EdmFilter>' must be imported from module 'CMS_CommonToolsCandAlgos.CandDecaySelector.h' before it is required
+#         typename StoreManager = typename ::helper::StoreManagerTrait<OutputCollection, edm::EDFilter>::type,
+#                                                    ^
+#/home/teemperor/cms/cmssw/CommonTools/CandAlgos/interface/ObjectShallowCloneSelector.h:15:43: note: in instantiation of default argument for 'ObjectSelector<type-#parameter-0-0,
+#      edm::OwnVector<reco::Candidate, edm::ClonePolicy<reco::Candidate> >, type-parameter-0-1, helper::NullPostProcessor<edm::OwnVector<reco::Candidate, #edm::ClonePolicy<reco::Candidate> >,
+#      edm::EDFilter> >' required here
+#class ObjectShallowCloneSelector : public ObjectSelector<Selector, reco::CandidateCollection, SizeSelector> {
+#                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#/home/teemperor/cms/cmssw/CommonTools/CandAlgos/interface/CandDecaySelector.h:47:10: note: previous definition is here
+#  struct StoreManagerTrait<reco::CandidateCollection, EdmFilter> {
+#         ^
+
+
+  "RecoLocalCalo/EcalRecAlgos/interface/EcalSeverityLevelService.h", # References EcalSeverityLevel which doesn't seem to exist
+
   "DataFormats/GeometrySurface/interface/SimpleConeBounds.h", #Calls tmp.inside(p) but that usually takes also a LocalError parameter
   "RecoVertex/KinematicFitPrimitives/interface/KinematicVertexDistance.h", #Includes nonexistent file
   "PhysicsTools/UtilAlgos/interface/StoreManagerTrait.h", #Redefines ObjectSelectorBase, CommonTools/UtilAlgos/interface/StoreManagerTrait.h
@@ -73,6 +107,7 @@ ignored_headers = [
   "CommonTools/RecoAlgos/interface/PhotonSelector.h", #Does funny things with unique_ptr copying around..
   "PhysicsTools/IsolationUtils/interface/TauConeIsolationAlgo.h", #Includes nonexistent header
   "CommonTools/CandAlgos/interface/NamedCandCombiner.h", #Includes nonexistent header
+  "CommonTools/CandUtils/interface/NamedCandCombiner.h", # Constructor doesn't work
   "TrackingTools/GsfTools/interface/KeepingNonZeroWeightsMerger.h", #Includes nonexistent file
   "Mixing/Base/interface/PoissonPUGenerator.h", # calls non-static member function  without object CLHEP::RandPoissonQ
   "RecoVertex/KinematicFitPrimitives/interface/KinematicVertexAssociator.h", #includes nonexistent header
@@ -81,6 +116,10 @@ ignored_headers = [
   "CommonTools/Utils/src/CutBinaryOperator.h", #includes nonexistend CutBase.h
 
   "TrackingTools/TrackFitters/interface/DebugHelpers.h", # textual header
+
+  "MagneticField/VolumeGeometry/interface/PlanarVolumeBoundary.h", # Includes nonexisent file: MagneticField/MagVolumeGeometry/interface/BoundaryPlane.h
+
+  "DataFormats/SiPixelDigi/interface/PixelDigifwd.h", # Forward delcares a nested class?
 
   "DataFormats/FEDRawData/interface/DaqData.h", # Completely broken
 
@@ -106,6 +145,18 @@ ignored_headers = [
 
   "PhysicsTools/IsolationUtils/interface/CalIsolationAlgoNoExp.h", # Includes nonexistent stuff
   "PhysicsTools/IsolationAlgos/interface/CalIsolationNoExtrapol.h", #includes above header
+
+  "ElectroWeakAnalysis/ZMuMu/interface/SmoothStepFunction.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuMuBack.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuMuBackNorm.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuMuFunction.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuMuNormalBack.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuMuScaledFunction.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuStandaloneFunction.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuStandaloneScaledFunction.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuTrackFunction.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuTrackScaledFunction.h", # Ingoring ZMuMu, totally broken
+  "ElectroWeakAnalysis/ZMuMu/interface/ZMuTrackScaledNormalBack.h", # Ingoring ZMuMu, totally broken
 
   "DetectorDescription/Core/interface/graph_path.h", # Broken code?
   "RecoTracker/Record/interface/Records.h", # Seems to be broken...
@@ -348,8 +399,13 @@ class ScramModuleLibrary(ScramTargetBase):
         self.source_files += glob.glob(base_glob+".cxx", recursive=self.add_subdir)
         self.source_files += glob.glob(base_glob+".c", recursive=self.add_subdir)
         self.source_files += glob.glob(base_glob+".C", recursive=self.add_subdir)
-        
-        if os.path.isfile("src/classes.h"):
+
+        for s in self.source_files:
+            if s.endswith("src/ReferenceTrajectory.cc"):
+                self.source_files.remove(s)
+                break
+
+        if os.path.isfile("src/classes.h") and not noLink:
             classes_xml = None
             classes_h = os.path.realpath("src/classes.h")
             if os.path.isfile("src/classes_def.xml"):
@@ -554,9 +610,10 @@ class CMakeGenerator:
     # Writes the necessary CMake commands to generate the given target
     # to the given out stream (which needs to support a 'write' call).
     def generate_target(self, target, out):
+        global allPCMTargets
         if target.is_virtual():
             return
-            
+
         if target.root_dict != None:
             out.write(target.root_dict.cmake_command())
             out.write("\n")
@@ -573,15 +630,49 @@ class CMakeGenerator:
             out.write("\n  " + source)
         out.write("\n)\n\n")
 
+
+        headers = self.get_headers(target.dir + "/interface/")
+        if cxxmodules:
+            with open(target.dir + "/moduletrigger.cxx", "w") as dummy:
+                if len(headers):
+                    dummy.write("#include \"")
+                    dummy.write(headers[0])
+                    dummy.write("\"\n")
+            out.write("add_library(")
+            out.write(target.symbol)
+            out.write("_PCM SHARED ")
+            out.write("moduletrigger.cxx)\n")
+            allPCMTargets.append(target.symbol + "_PCM")
+
+            out.write("add_custom_command(TARGET " + target.symbol + "_PCM")
+            out.write(" PRE_BUILD COMMAND touch /dev/null )\n")
+
+            for d in target.dependencies:
+                if d.built_by_cmake():
+                    out.write("add_dependencies(")
+                    out.write(target.symbol)
+                    out.write("_PCM ")
+                    out.write(d.symbol)
+                    out.write("_PCM)\n")
+
+            out.write("add_dependencies(")
+            out.write(target.symbol)
+            out.write(" ")
+            out.write(target.symbol)
+            out.write("_PCM)\n\n")
+
         for dir in target.include_dirs:
             out.write("target_include_directories(" + target.symbol +
                             " PUBLIC " + dir + ")\n")
+            if cxxmodules:
+                out.write("target_include_directories(" + target.symbol +
+                                "_PCM PUBLIC " + dir + ")\n")
         
-        if len(target.defines) != 0:
+        if not noLink and len(target.defines) != 0:
             out.write("target_compile_definitions(" + target.symbol
                       + " PUBLIC " + target.defines + ")\n")
 
-        if len(target.cxx_flags) != 0:
+        if not noLink and len(target.cxx_flags) != 0:
             out.write("set_source_files_properties(\n")
             for source in target.source_files:
                 out.write("\n  " + source)
@@ -704,7 +795,7 @@ class CMakeGenerator:
                           "-Wno-deprecated-declarations -Wno-deprecated-register -Wno-null-dereference -std=c++14\")\n")
         if cxxmodules:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} "
-                              "-fmodules -Wno-module-import-in-extern-c -Xclang -fmodules-local-submodule-visibility -Rmodule-build -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
+                              "-fmodules -Wno-module-import-in-extern-c -Xclang -fmodules-local-submodule-visibility -Xclang -fdisable-module-hash -fPIC -ivfsoverlay " + prefix + "libs.overlay.yaml -fmodules-cache-path=${CMAKE_BINARY_DIR}/pcms/\")\n")
         if printTextualHeaders:
             output_file.write("set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -H\")\n")
 
@@ -732,6 +823,12 @@ class CMakeGenerator:
             else:
                 module_groups[group_name] = [module]
 
+        if cxxmodules:
+          output_file.write("\nadd_custom_target(CMSModules DEPENDS")
+          for pcm in allPCMTargets:
+            output_file.write("  " + pcm + "\n")
+          output_file.write(")\n")
+
         output_file.write("\n\n")
 
         output_file.close()
@@ -742,15 +839,24 @@ class CMakeGenerator:
     def get_headers(self, path):
         result = set()
         result |= set(glob.glob(path + "**/*.h", recursive=True))
-        for s in result:
-            if s.endswith("/classes.h"):
-                result.remove(s)
-                break
-        
         result |= set(glob.glob(path + "**/*.hh", recursive=True))
         result |= set(glob.glob(path + "**/*.hpp", recursive=True))
         result |= set(glob.glob(path + "**/*.icc", recursive=True))
         result |= set(glob.glob(path + "**/*.inc", recursive=True))
+
+        for s in list(result):
+            if s.endswith("/classes.h"):
+                result.remove(s)
+                continue
+            if s.endswith("/headers.h"):
+                result.remove(s)
+                continue
+
+            for ignored in ignored_headers:
+                if s.endswith(ignored):
+                    result.remove(s)
+                    break
+
         result = list(result)
         result.sort()
         
@@ -866,11 +972,11 @@ class CMakeGenerator:
             shutil.copyfile(os.path.join(script_dir, "system.modulemap"), "system.modulemap")
 
     def gen(self):
-        self.gen_top_level()
         for module in self.project.modules:
             if self.handle_module(module):
                 for target in module.targets:
                     self.handle_target(target)
+        self.gen_top_level()
 
 # Dummy code in test normal dict generation doesn't work for some reason...
 def make_dicts():

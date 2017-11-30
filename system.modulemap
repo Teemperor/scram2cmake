@@ -129,13 +129,13 @@ module Pythia8 {
     module "WeakShowerMEs.h" { header "Pythia8/WeakShowerMEs.h" export * }
 }
 
-module Geant4 {
+/*module Geant4 {
     module CLHEP {
         module Units_SystemOfUnits { header "Geant4/CLHEP/Units/SystemOfUnits.h" export * }
         export *
     }
     export *
-}
+}*/
 
 // The system CLHEP installation that is also needed...
 module CLHEPSys {
